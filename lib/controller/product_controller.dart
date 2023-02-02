@@ -1,4 +1,5 @@
 import 'package:emarket_seller/services/database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,7 +15,6 @@ class ProductController extends GetxController {
 
   @override
   void onInit() {
-    String id = Get.find<AuthController>().user!.uid;
     fetchProduct();
     super.onInit();
   }
@@ -50,13 +50,21 @@ class ProductController extends GetxController {
     update();
   }
 
-  Future<void> updateProduct(Product product, String id) async {
-    return await database.updateProduct(product, id);
+  void updateProduct(Product product) async {
+    String id = Get.find<AuthController>().user!.uid;
+    try {
+      await database.updateProduct(product, id);
+      debugPrint('Product updated: $product');
+      update();
+    } catch (e) {
+      debugPrint('Error updating product: $e');
+    }
   }
 
   void deleteProduct(Product product) async {
     String id = Get.find<AuthController>().user!.uid;
     await database.deleteProduct(product, id);
+    debugPrint('Product deleted: $product');
     update();
   }
 

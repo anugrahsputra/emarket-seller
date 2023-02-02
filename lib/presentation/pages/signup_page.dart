@@ -130,7 +130,7 @@ class SignUpPage extends GetWidget<AuthController> {
                                 nameController.text,
                                 storeNameController.text,
                                 emailController.text,
-                                'https://www.seekpng.com/png/detail/110-1100707_person-avatar-placeholder.png',
+                                'https://ui-avatars.com/api/?name=${nameController.text}',
                                 passwordController.text,
                               );
                               FocusManager.instance.primaryFocus?.unfocus();

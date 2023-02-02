@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'common/common.dart';
 import 'controller/controller.dart';
 import 'firebase_options.dart';
 import 'presentation/presentation.dart';
@@ -25,71 +26,30 @@ class MyApp extends StatelessWidget {
       title: 'Emarket Seller',
       initialBinding: AuthBinding(),
       theme: ThemeData(
-          primaryColor: const Color(0xff212529),
-          appBarTheme: AppBarTheme(
-            surfaceTintColor: const Color(0xfff8f9fa),
-            color: const Color(0xfff8f9fa),
-            iconTheme: const IconThemeData(color: Color(0xff212529)),
-            titleTextStyle: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-              fontSize: 20,
-            ),
+        primaryColor: const Color(0xff212529),
+        appBarTheme: AppBarTheme(
+          surfaceTintColor: const Color(0xfff8f9fa),
+          color: const Color(0xfff8f9fa),
+          iconTheme: const IconThemeData(color: Color(0xff212529)),
+          titleTextStyle: GoogleFonts.roboto(
+            color: const Color(0xff212529),
+            fontSize: 20,
           ),
-          useMaterial3: true,
-          inputDecorationTheme: const InputDecorationTheme(
-            fillColor: Color(0xffdee2e6),
-          ),
-          scaffoldBackgroundColor: const Color(0xfff8f9fa),
-          cardColor: const Color(0xffa5a5a5),
-          iconTheme: const IconThemeData(
-            color: Color(0xfff8f9fa),
-          ),
-          fontFamily: GoogleFonts.roboto().fontFamily,
-          textTheme: TextTheme(
-            bodyLarge: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            bodyMedium: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            bodySmall: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            displayLarge: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            displayMedium: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            displaySmall: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            headlineMedium: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            headlineSmall: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            titleLarge: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            labelSmall: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            titleMedium: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-            titleSmall: GoogleFonts.roboto(
-              color: const Color(0xff212529),
-            ),
-          )),
+        ),
+        useMaterial3: true,
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color(0xffdee2e6),
+        ),
+        scaffoldBackgroundColor: const Color(0xfff8f9fa),
+        cardColor: const Color(0xffa5a5a5),
+        iconTheme: const IconThemeData(
+          color: Color(0xfff8f9fa),
+        ),
+        fontFamily: GoogleFonts.roboto().fontFamily,
+        textTheme: textTheme,
+      ),
       home: const Root(),
-      getPages: [
-        GetPage(name: '/home', page: () => Homepage()),
-        GetPage(name: '/new-product-page', page: () => NewProductPage()),
-        GetPage(name: '/signin', page: () => SignInPage()),
-        GetPage(name: '/signup', page: () => SignUpPage()),
-      ],
+      getPages: Routes.routes,
     );
   }
 }
@@ -106,7 +66,7 @@ class Root extends GetWidget<AuthController> {
       builder: (_) {
         return Loading(
           loading: controller.loading,
-          child: controller.user?.uid != null ? Homepage() : SignInPage(),
+          child: controller.user?.uid != null ? MainPage() : SignInPage(),
         );
       },
     );

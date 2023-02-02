@@ -156,8 +156,8 @@ class ProductCard extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
-                              await productController.updateProduct(
-                                  product, index);
+                              productController.updateProduct(product);
+
                               Get.back();
                             },
                             child: const Text('Simpan'),
