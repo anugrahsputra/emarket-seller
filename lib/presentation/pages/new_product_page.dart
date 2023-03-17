@@ -158,8 +158,8 @@ class NewProductPage extends StatelessWidget {
                       onChanged: (value) {
                         productController.newProduct.update(
                           'price',
-                          (_) => double.parse(value),
-                          ifAbsent: () => double.parse(value),
+                          (_) => int.parse(value),
+                          ifAbsent: () => int.parse(value),
                         );
                       },
                     ),

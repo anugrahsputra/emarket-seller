@@ -16,6 +16,9 @@ class ProductCard extends StatelessWidget {
   final String index;
 
   final ProductController productController = Get.find<ProductController>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
   Database database = Database();
 
   @override
@@ -50,6 +53,7 @@ class ProductCard extends StatelessWidget {
                       height: 10,
                     ),
                     TextField(
+                      controller: nameController,
                       decoration: InputDecoration(
                         floatingLabelStyle: const TextStyle(
                           color: Color(0xff212529),
@@ -62,13 +66,6 @@ class ProductCard extends StatelessWidget {
                         border: const OutlineInputBorder(),
                         labelText: product.name,
                       ),
-                      onChanged: (value) {
-                        productController.newProduct.update(
-                          'name',
-                          (_) => value,
-                          ifAbsent: () => value,
-                        );
-                      },
                     ),
                     const SizedBox(
                       height: 10,
@@ -77,6 +74,7 @@ class ProductCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: priceController,
                             decoration: InputDecoration(
                               floatingLabelStyle: const TextStyle(
                                 color: Color(0xff212529),
@@ -103,6 +101,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
+                            controller: quantityController,
                             decoration: InputDecoration(
                               floatingLabelStyle: const TextStyle(
                                 color: Color(0xff212529),
@@ -115,13 +114,6 @@ class ProductCard extends StatelessWidget {
                               border: const OutlineInputBorder(),
                               labelText: product.quantity.toString(),
                             ),
-                            onChanged: (value) {
-                              productController.newProduct.update(
-                                'quantity',
-                                (_) => int.parse(value),
-                                ifAbsent: () => int.parse(value),
-                              );
-                            },
                           ),
                         ),
                       ],
@@ -156,8 +148,15 @@ class ProductCard extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
-                              productController.updateProduct(product);
-
+                              int newPrice = int.parse(priceController.text);
+                              int newQuantity =
+                                  int.parse(quantityController.text);
+                              productController.updateName(
+                                  product.id, nameController.text);
+                              productController.updatePrice(
+                                  product.id, newPrice);
+                              productController.updateQuantity(
+                                  product.id, newQuantity);
                               Get.back();
                             },
                             child: const Text('Simpan'),
@@ -204,7 +203,7 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        product.price.toString(),
+                        'Harga: Rp. ${product.price}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

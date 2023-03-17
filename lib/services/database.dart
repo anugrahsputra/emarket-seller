@@ -47,13 +47,18 @@ class Database {
             snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList());
   }
 
-  Future<void> updateProduct(Product product, String id) {
+  Future<void> updateProduct(
+    String sellerId,
+    String productId,
+    String field,
+    dynamic newValue,
+  ) {
     return _firestore
         .collection('sellers')
-        .doc(id)
+        .doc(sellerId)
         .collection('products')
-        .doc(product.id)
-        .update(product.toMap());
+        .doc(productId)
+        .update({field: newValue});
   }
 
   Future<void> deleteProduct(Product product, String id) {
@@ -63,5 +68,29 @@ class Database {
         .collection('products')
         .doc(product.id)
         .delete();
+  }
+
+  Stream<List<Orders>> getOrders(String sellerId) {
+    return _firestore
+        .collectionGroup('checkout')
+        .where('sellerId', isEqualTo: sellerId)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Orders.fromSnapshot(doc)).toList());
+  }
+
+  Future<void> updateOrderStatus(
+    Orders order,
+    String field,
+    bool newValue,
+  ) {
+    return _firestore
+        .collection('buyers')
+        .doc(order.buyerId)
+        .collection('checkout')
+        .where('id', isEqualTo: order.id)
+        .get()
+        .then((querySnaphot) =>
+            querySnaphot.docs.first.reference.update({field: newValue}));
   }
 }

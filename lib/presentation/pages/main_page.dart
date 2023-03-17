@@ -9,22 +9,22 @@ class MainPage extends StatelessWidget {
 
   final BottomNavbarController controller = Get.put(BottomNavbarController());
 
-  List<Widget> pageList = [
+  final List<Widget> pageList = [
     Homepage(),
-    const OrderPage(),
+    OrderPage(),
     ProfilePage(),
   ];
 
-  List<BottomNavigationBarItem> bottomNavBarItems = [
-    const BottomNavigationBarItem(
+  final List<NavigationDestination> navigationDestinations = [
+    const NavigationDestination(
       icon: Icon(Icons.home),
       label: 'Home',
     ),
-    const BottomNavigationBarItem(
+    const NavigationDestination(
       icon: Icon(Icons.shopping_cart),
       label: 'Orders',
     ),
-    const BottomNavigationBarItem(
+    const NavigationDestination(
       icon: Icon(Icons.person),
       label: 'Profile',
     ),
@@ -36,12 +36,12 @@ class MainPage extends StatelessWidget {
       builder: (_) {
         return Scaffold(
           body: pageList[controller.tabIndex.value],
-          bottomNavigationBar: BottomNavigationBar(
-            items: bottomNavBarItems,
-            currentIndex: controller.tabIndex.value,
-            onTap: (index) {
+          bottomNavigationBar: NavigationBar(
+            destinations: navigationDestinations,
+            onDestinationSelected: (index) {
               controller.changedTabIndex(index);
             },
+            selectedIndex: controller.tabIndex.value,
           ),
         );
       },

@@ -1,5 +1,4 @@
-import 'package:emarket_seller/controller/auth_controller.dart';
-import 'package:emarket_seller/controller/product_controller.dart';
+import 'package:emarket_seller/controller/controller.dart';
 import 'package:get/get.dart';
 
 class AuthBinding extends Bindings {
@@ -8,5 +7,6 @@ class AuthBinding extends Bindings {
     Get.put<AuthController>(AuthController(), permanent: true);
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => ProductController(), fenix: true);
+    Get.lazyPut(() => OrderController(), fenix: true);
   }
 }

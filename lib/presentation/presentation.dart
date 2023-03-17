@@ -1,3 +1,4 @@
+export 'pages/detail_order_page.dart';
 export 'pages/home_page.dart';
 export 'pages/main_page.dart';
 export 'pages/new_product_page.dart';
@@ -8,4 +9,5 @@ export 'pages/signup_page.dart';
 export 'pages/widgets/bottom_text_widget.dart';
 export 'pages/widgets/button_widget.dart';
 export 'pages/widgets/loading_widget.dart';
+export 'pages/widgets/ordered_product_card_widget.dart';
 export 'pages/widgets/product_card_widget.dart';

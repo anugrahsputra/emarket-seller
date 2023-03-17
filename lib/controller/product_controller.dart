@@ -39,6 +39,7 @@ class ProductController extends GetxController {
     String id = Get.find<AuthController>().user!.uid;
     Product product = Product(
       name: newProduct["name"],
+      sellerId: id,
       price: newProduct["price"],
       id: uuid.v4(),
       category: newProduct["category"],
@@ -50,11 +51,33 @@ class ProductController extends GetxController {
     update();
   }
 
-  void updateProduct(Product product) async {
+  void updateName(String productId, String value) async {
     String id = Get.find<AuthController>().user!.uid;
     try {
-      await database.updateProduct(product, id);
-      debugPrint('Product updated: $product');
+      await database.updateProduct(id, productId, 'name', value);
+      debugPrint('Product updated: $productId');
+      update();
+    } catch (e) {
+      debugPrint('Error updating product: $e');
+    }
+  }
+
+  void updatePrice(String productId, int value) async {
+    String id = Get.find<AuthController>().user!.uid;
+    try {
+      await database.updateProduct(id, productId, 'price', value);
+      debugPrint('Product updated: $productId');
+      update();
+    } catch (e) {
+      debugPrint('Error updating product: $e');
+    }
+  }
+
+  void updateQuantity(String productId, int value) async {
+    String id = Get.find<AuthController>().user!.uid;
+    try {
+      await database.updateProduct(id, productId, 'quantity', value);
+      debugPrint('Product updated: $productId');
       update();
     } catch (e) {
       debugPrint('Error updating product: $e');
@@ -70,5 +93,11 @@ class ProductController extends GetxController {
 
   void clearProducts() {
     product.clear();
+  }
+
+  @override
+  void dispose() {
+    fetchProduct();
+    super.dispose();
   }
 }
