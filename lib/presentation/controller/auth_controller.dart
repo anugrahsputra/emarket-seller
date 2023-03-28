@@ -61,7 +61,7 @@ class AuthController extends GetxController {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       Get.find<SellerController>().seller =
-          await Database().getSeller(credential.user!.uid);
+          (await Database().getSeller(credential.user!.uid))!;
       Get.find<SellerController>().update();
       Get.find<ProductController>().update();
       Get.back();

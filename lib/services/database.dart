@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emarket_seller/model/model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Database {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> createNewSeller(SellerModel seller) async {
     try {
@@ -12,78 +16,129 @@ class Database {
           .set(seller.toDocument());
       return true;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }
 
-  Future<SellerModel> getSeller(String id) async {
+  Future<SellerModel?> getSeller(String id) async {
+    if (_auth.currentUser == null) {
+      return null; // Return null if user is not authenticated
+    }
     try {
       DocumentSnapshot doc =
           await _firestore.collection('sellers').doc(id).get();
       return SellerModel.fromSnapshot(doc);
     } catch (e) {
-      print(e);
+      log(e.toString());
       return const SellerModel();
     }
   }
 
-  Future<void> addProduct(Product product, String id) async {
-    return _firestore
-        .collection('sellers')
-        .doc(id)
-        .collection('products')
-        .doc(product.id)
-        .set(product.toMap());
+  Future<bool?> addProduct(Product product, String id) async {
+    if (_auth.currentUser == null) {
+      return null; // Return null if user is not authenticated
+    }
+    try {
+      await _firestore
+          .collection('sellers')
+          .doc(id)
+          .collection('products')
+          .doc(product.id)
+          .set(product.toMap());
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 
   Stream<List<Product>> getProduct(String id) {
-    return _firestore
-        .collection('sellers')
-        .doc(id)
-        .collection('products')
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList());
+    if (_auth.currentUser == null) {
+      // Return an empty stream if user is not authenticated
+      return const Stream.empty();
+    }
+    try {
+      return _firestore
+          .collection('sellers')
+          .doc(id)
+          .collection('products')
+          .snapshots()
+          .map((snapshot) =>
+              snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList());
+    } catch (e) {
+      log(e.toString());
+      return const Stream.empty();
+    }
   }
 
-  Future<void> updateProduct(
+  Future<bool?> updateProduct(
     String sellerId,
     String productId,
     String field,
     dynamic newValue,
-  ) {
-    return _firestore
-        .collection('sellers')
-        .doc(sellerId)
-        .collection('products')
-        .doc(productId)
-        .update({field: newValue});
+  ) async {
+    if (_auth.currentUser == null) {
+      return null; // Return null if user is not authenticated
+    }
+    try {
+      await _firestore
+          .collection('sellers')
+          .doc(sellerId)
+          .collection('products')
+          .doc(productId)
+          .update({field: newValue});
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 
-  Future<void> deleteProduct(Product product, String id) {
-    return _firestore
-        .collection('sellers')
-        .doc(id)
-        .collection('products')
-        .doc(product.id)
-        .delete();
+  Future<bool?> deleteProduct(Product product, String id) async {
+    if (_auth.currentUser == null) {
+      return null; // Return null if user is not authenticated
+    }
+    try {
+      await _firestore
+          .collection('sellers')
+          .doc(id)
+          .collection('products')
+          .doc(product.id)
+          .delete();
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 
   Stream<List<Orders>> getOrders(String sellerId) {
-    return _firestore
-        .collectionGroup('checkout')
-        .where('sellerId', isEqualTo: sellerId)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Orders.fromSnapshot(doc)).toList());
+    if (_auth.currentUser == null) {
+      // Return an empty stream if user is not authenticated
+      return const Stream.empty();
+    }
+    try {
+      return _firestore
+          .collectionGroup('checkout')
+          .where('sellerId', isEqualTo: sellerId)
+          .snapshots()
+          .map((snapshot) =>
+              snapshot.docs.map((doc) => Orders.fromSnapshot(doc)).toList());
+    } catch (e) {
+      log(e.toString());
+      return const Stream.empty();
+    }
   }
 
   Future<void> updateOrderStatus(
     Orders order,
     String field,
     bool newValue,
-  ) {
+  ) async {
+    if (_auth.currentUser == null) {
+      return; // Return null if user is not authenticated
+    }
     return _firestore
         .collection('buyers')
         .doc(order.buyerId)
@@ -92,5 +147,19 @@ class Database {
         .get()
         .then((querySnaphot) =>
             querySnaphot.docs.first.reference.update({field: newValue}));
+  }
+
+  Stream<List<Buyer>> getBuyer() {
+    if (_auth.currentUser == null) {
+      // Return an empty stream if user is not authenticated
+      return const Stream.empty();
+    }
+    try {
+      return _firestore.collection('buyers').snapshots().map((snapshot) =>
+          snapshot.docs.map((doc) => Buyer.fromSnapshot(doc)).toList());
+    } catch (e) {
+      log(e.toString());
+      return const Stream.empty();
+    }
   }
 }

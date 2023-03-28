@@ -1,5 +1,5 @@
-import 'package:emarket_seller/controller/controller.dart';
 import 'package:emarket_seller/model/model.dart';
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

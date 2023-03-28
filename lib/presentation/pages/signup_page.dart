@@ -1,4 +1,4 @@
-import 'package:emarket_seller/controller/controller.dart';
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

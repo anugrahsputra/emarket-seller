@@ -8,6 +8,7 @@ class OrderController extends GetxController {
   final Database database = Database();
   final orders = RxList<Orders>([]);
   final isProcessing = false.obs;
+  final isCancelled = false.obs;
 
   @override
   void onInit() {
@@ -20,8 +21,13 @@ class OrderController extends GetxController {
     orders.bindStream(database.getOrders(sellerId));
   }
 
-  void updateOrderStatus(Orders order, String field, bool value) async {
+  processOrder(Orders order, String field, bool value) async {
     await database.updateOrderStatus(order, field, value);
     isProcessing.value = value;
+  }
+
+  cancelOrder(Orders order, String field, bool value) async {
+    await database.updateOrderStatus(order, field, value);
+    isCancelled.value = true;
   }
 }

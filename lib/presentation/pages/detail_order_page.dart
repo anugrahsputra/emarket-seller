@@ -1,18 +1,23 @@
-import 'package:emarket_seller/controller/controller.dart';
 import 'package:emarket_seller/model/model.dart';
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailOrder extends StatelessWidget {
-  DetailOrder({Key? key, required this.order}) : super(key: key);
+  const DetailOrder({Key? key, required this.order, required this.buyer})
+      : super(key: key);
 
   final Orders order;
-  final OrderController orderController = Get.put(OrderController());
+  final Buyer buyer;
 
   @override
   Widget build(BuildContext context) {
+    final OrderController orderController = Get.put(OrderController());
+    final buyersOrder = orderController.orders
+        .where((element) => element.buyerId == buyer.id)
+        .toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Order'),
@@ -38,19 +43,26 @@ class DetailOrder extends StatelessWidget {
                   ),
                 ),
                 Obx(
-                  () => orderController.isProcessing.value
+                  () => orderController.isCancelled.value
                       ? Text(
-                          'Sedang Diproses',
+                          'Pesanan ditolak',
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                           ),
                         )
-                      : Text(
-                          'Belum Diproses',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                          ),
-                        ),
+                      : orderController.isProcessing.value
+                          ? Text(
+                              'Sedang Diproses',
+                              style: GoogleFonts.roboto(
+                                fontSize: 14,
+                              ),
+                            )
+                          : Text(
+                              'Belum Diproses',
+                              style: GoogleFonts.roboto(
+                                fontSize: 14,
+                              ),
+                            ),
                 )
               ],
             ),
@@ -91,7 +103,7 @@ class DetailOrder extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '083812130044',
+                  buyer.phoneNumber,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                   ),
@@ -116,7 +128,7 @@ class DetailOrder extends StatelessWidget {
                 SizedBox(
                   width: 160,
                   child: Text(
-                    'Perumahan Grand Simpang Asri, Sukamanah',
+                    buyer.address,
                     style: GoogleFonts.roboto(
                       fontSize: 16,
                     ),
@@ -213,7 +225,7 @@ class DetailOrder extends StatelessWidget {
                 children: [
                   FilledButton(
                     onPressed: () {
-                      orderController.updateOrderStatus(
+                      orderController.processOrder(
                         order,
                         'isProcessing',
                         !orderController.isProcessing.value,
@@ -231,7 +243,13 @@ class DetailOrder extends StatelessWidget {
                     width: 10,
                   ),
                   FilledButton.tonal(
-                    onPressed: () {},
+                    onPressed: () {
+                      orderController.cancelOrder(
+                        order,
+                        'isCancelled',
+                        !orderController.isCancelled.value,
+                      );
+                    },
                     child: Text(
                       'Tolak Pesanan',
                       style: GoogleFonts.roboto(

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'common/common.dart';
-import 'controller/controller.dart';
+import 'presentation/controller/controller.dart';
 import 'firebase_options.dart';
 import 'presentation/presentation.dart';
 

@@ -1,4 +1,4 @@
-import 'package:emarket_seller/controller/controller.dart';
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,9 +16,9 @@ class ProfilePage extends StatelessWidget {
       body: Center(
         child: GetX<SellerController>(
           initState: (_) async {
-            controller.seller = await database.getSeller(
+            controller.seller = (await database.getSeller(
               authController.user!.uid,
-            );
+            ))!;
           },
           builder: (_) {
             return Column(

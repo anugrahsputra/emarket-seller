@@ -38,8 +38,11 @@ dependencies:
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
   get: ^4.6.5
   google_fonts: ^3.0.1
+  google_maps_flutter: ^2.2.5
   image_picker: ^0.8.6+1
   intl: ^0.17.0
   uuid: ^3.0.7
