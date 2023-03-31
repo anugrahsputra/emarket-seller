@@ -3,6 +3,7 @@ import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:emarket_seller/services/database.dart';
 import 'package:emarket_seller/services/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,11 +44,46 @@ class NewProductPage extends StatelessWidget {
                         color: const Color(0xff495057),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.add_photo_alternate_rounded,
-                          size: 80,
-                        ),
+                      child: Obx(
+                        () {
+                          if (productController.isLoading.value) {
+                            var progress =
+                                productController.uploadProgress.value;
+                            return Center(
+                              child: Text(
+                                '${(progress * 100).toStringAsFixed(0)}%',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return productController.newProduct['imageUrl'] ==
+                                    null
+                                ? const Center(
+                                    child: Icon(
+                                      Icons.add_photo_alternate_rounded,
+                                      size: 80,
+                                    ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      productController.newProduct['imageUrl']!,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                    ),
+                                  );
+                          }
+                        },
                       ),
                     ),
                     onTap: () async {
@@ -56,15 +92,13 @@ class NewProductPage extends StatelessWidget {
                           await picker.pickImage(source: ImageSource.gallery);
 
                       if (image == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Tidak ada gambar yang dipilih'),
-                          ),
-                        );
+                        Fluttertoast.showToast(
+                            msg: 'Tidak ada gambar yang dipilih');
                       }
                       if (image != null) {
-                        await storage.uploadImage(image);
-                        var imageUrl = await storage.getDownloadUrl(image.name);
+                        // await storage.uploadImage(image, ); // <== HERE
+                        await productController.uploadProductImage(image);
+                        var imageUrl = await storage.getProductUrl(image.name);
                         productController.newProduct.update(
                           'imageUrl',
                           (_) => imageUrl,
@@ -78,7 +112,7 @@ class NewProductPage extends StatelessWidget {
                   ),
                   Text(
                     'file name',
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.poppins(
                       fontStyle: FontStyle.italic,
                     ),
                   )

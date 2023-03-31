@@ -1,5 +1,7 @@
+import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
+import 'package:emarket_seller/presentation/pages/maps_page.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,205 +24,216 @@ class DetailOrder extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Detail Order'),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(16),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Informasi Pesanan',
-                  style: GoogleFonts.roboto(
-                    fontSize: 25,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          constraints: BoxConstraints(
+            maxHeight: context.mediaQuerySize.height,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Informasi Pesanan',
+                    style: GoogleFonts.poppins(
+                      fontSize: 25,
+                    ),
                   ),
-                ),
-                Obx(
-                  () => orderController.isCancelled.value
-                      ? Text(
-                          'Pesanan ditolak',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                          ),
-                        )
-                      : orderController.isProcessing.value
-                          ? Text(
-                              'Sedang Diproses',
-                              style: GoogleFonts.roboto(
-                                fontSize: 14,
-                              ),
-                            )
-                          : Text(
-                              'Belum Diproses',
-                              style: GoogleFonts.roboto(
-                                fontSize: 14,
-                              ),
+                  Obx(
+                    () => orderController.isCancelled.value
+                        ? Text(
+                            'Pesanan ditolak',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
                             ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 80,
-                  child: Text(
-                    'Nama',
-                    style: GoogleFonts.roboto(
-                      fontSize: 20,
+                          )
+                        : orderController.isProcessing.value
+                            ? Text(
+                                'Sedang Diproses',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              )
+                            : Text(
+                                'Belum Diproses',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: Text(
+                      'Nama',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  order.displayName,
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 80,
-                  child: Text(
-                    'No. Hp',
-                    style: GoogleFonts.roboto(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                Text(
-                  buyer.phoneNumber,
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 80,
-                  child: Text(
-                    'Alamat',
-                    style: GoogleFonts.roboto(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 160,
-                  child: Text(
-                    buyer.address,
-                    style: GoogleFonts.roboto(
+                  Text(
+                    order.displayName,
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                     ),
                   ),
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Item',
-              style: GoogleFonts.roboto(
-                fontSize: 25,
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: order.cart.length,
-              itemBuilder: (context, index) {
-                return OrderedProductCard(
-                  index: index,
-                  cart: order.cart[index],
-                );
-              },
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Sub Total',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: Text(
+                      'No. Hp',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
-                ),
-                Text(
-                  'Rp. ${order.total}',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+                  Text(
+                    buyer.phoneNumber,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Ongkos Kirim',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: Text(
+                      'Alamat',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
-                ),
-                Text(
-                  'Gratis',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+                  SizedBox(
+                    width: 160,
+                    child: Text(
+                      buyer.address,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      Get.to(() => MapPage(
+                            buyer: buyer,
+                          ));
+                    },
+                    icon: const Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Item',
+                style: GoogleFonts.poppins(
+                  fontSize: 25,
                 ),
-                Text(
-                  'Rp. ${order.total}',
-                  style: GoogleFonts.roboto(
-                    fontSize: 20,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: order.cart.length,
+                itemBuilder: (context, index) {
+                  return OrderedProductCard(
+                    index: index,
+                    cart: order.cart[index],
+                  );
+                },
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Sub Total',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: Row(
+                  Text(
+                    PriceFormatter.format(order.total),
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Ongkos Kirim',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    'Gratis',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    PriceFormatter.format(order.total),
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FilledButton(
@@ -233,7 +246,7 @@ class DetailOrder extends StatelessWidget {
                     },
                     child: Text(
                       'Terima Pesanan',
-                      style: GoogleFonts.roboto(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: Colors.white,
                       ),
@@ -252,15 +265,15 @@ class DetailOrder extends StatelessWidget {
                     },
                     child: Text(
                       'Tolak Pesanan',
-                      style: GoogleFonts.roboto(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,9 +1,11 @@
+import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductCard extends StatelessWidget {
   ProductCard({
@@ -43,7 +45,7 @@ class ProductCard extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       child: Text(
                         'Edit Product',
-                        style: GoogleFonts.roboto(
+                        style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -85,7 +87,7 @@ class ProductCard extends StatelessWidget {
                                 ),
                               ),
                               border: const OutlineInputBorder(),
-                              labelText: 'Rp. $product.price',
+                              labelText: PriceFormatter.format(product.price),
                             ),
                             onChanged: (value) {
                               productController.newProduct.update(
@@ -186,6 +188,27 @@ class ProductCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Shimmer.fromColors(
+                          baseColor: const Color(0xffa5a5a5),
+                          highlightColor: const Color(0xfff8f9fa),
+                          child: Container(
+                            color: const Color(0xff212529),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               Expanded(
@@ -203,7 +226,7 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Harga: Rp. ${product.price}',
+                        'Harga: ${PriceFormatter.format(product.price)}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

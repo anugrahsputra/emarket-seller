@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'common/common.dart';
-import 'presentation/controller/controller.dart';
 import 'firebase_options.dart';
+import 'presentation/controller/controller.dart';
 import 'presentation/presentation.dart';
 
 void main() async {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: const Color(0xfff8f9fa),
           color: const Color(0xfff8f9fa),
           iconTheme: const IconThemeData(color: Color(0xff212529)),
-          titleTextStyle: GoogleFonts.roboto(
+          titleTextStyle: GoogleFonts.poppins(
             color: const Color(0xff212529),
             fontSize: 20,
           ),
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         iconTheme: const IconThemeData(
           color: Color(0xfff8f9fa),
         ),
-        fontFamily: GoogleFonts.roboto().fontFamily,
+        fontFamily: GoogleFonts.poppins().fontFamily,
         textTheme: textTheme,
       ),
       home: const Root(),

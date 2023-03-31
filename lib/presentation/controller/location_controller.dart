@@ -4,6 +4,7 @@ import 'package:emarket_seller/model/model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationController extends GetxController {
   final Geolocator geolocator = Geolocator();
@@ -22,31 +23,30 @@ class LocationController extends GetxController {
   }
 
   Future checkPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+    var status = await Permission.location.status;
+    if (status == PermissionStatus.denied) {
+      status = await Permission.location.request();
+      if (status != PermissionStatus.granted) {
         return Future.error('Location permissions are denied');
       }
     }
 
-    if (permission == LocationPermission.deniedForever) {
+    if (status == PermissionStatus.permanentlyDenied) {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
+
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
     try {
       await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+      );
     } catch (e) {
-      return Future.error('Location service are disbled.');
+      return Future.error('Location services are disabled.');
     }
   }
 
@@ -54,7 +54,7 @@ class LocationController extends GetxController {
     try {
       await checkPermission();
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+          desiredAccuracy: LocationAccuracy.bestForNavigation);
       location.value = LocationModel(
         latitude: position.latitude,
         longitude: position.longitude,

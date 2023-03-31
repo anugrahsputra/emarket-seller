@@ -35,9 +35,26 @@ class Database {
     }
   }
 
-  Future<bool?> addProduct(Product product, String id) async {
+  Future<bool?> updateSellerInfo(
+      String sellerId, String field, dynamic newValue) async {
     if (_auth.currentUser == null) {
       return null; // Return null if user is not authenticated
+    }
+    try {
+      await _firestore
+          .collection('sellers')
+          .doc(sellerId)
+          .update({field: newValue});
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool?> addProduct(Product product, String id) async {
+    if (_auth.currentUser == null) {
+      return null;
     }
     try {
       await _firestore

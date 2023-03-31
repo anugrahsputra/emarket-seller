@@ -8,9 +8,11 @@ class Homepage extends StatelessWidget {
 
   final AuthController controller = Get.put(AuthController());
   final ProductController productController = Get.put(ProductController());
+  final LocationController locationController = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
+    locationController.checkPermission();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),

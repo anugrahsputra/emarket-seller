@@ -9,6 +9,8 @@ class SignUpPage extends GetWidget<AuthController> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final LocationController locationController = Get.put(LocationController());
+
   SignUpPage({super.key});
 
   @override
@@ -31,101 +33,44 @@ class SignUpPage extends GetWidget<AuthController> {
                     Form(
                       child: Column(
                         children: [
-                          TextFormField(
-                            cursorColor: const Color(0xff212529),
+                          FormText(
                             controller: nameController,
+                            hintText: 'Nama',
+                            icon: Icons.person,
                             keyboardType: TextInputType.name,
-                            decoration: InputDecoration(
-                              hintText: 'Nama',
-                              prefixIcon: const Icon(
-                                color: Color(0xff495057),
-                                Icons.person_rounded,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  style: BorderStyle.none,
-                                  width: 0,
-                                ),
-                              ),
-                              filled: true,
-                            ),
                           ),
                           const SizedBox(
                             height: 15,
                           ),
-                          TextFormField(
-                            cursorColor: const Color(0xff212529),
+                          FormText(
                             controller: storeNameController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              hintText: 'Nama Toko/usaha',
-                              prefixIcon: const Icon(
-                                color: Color(0xff495057),
-                                Icons.store_rounded,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  style: BorderStyle.none,
-                                  width: 0,
-                                ),
-                              ),
-                              filled: true,
-                            ),
+                            hintText: 'Nama Toko/usaha',
+                            icon: Icons.store_rounded,
+                            keyboardType: TextInputType.name,
                           ),
                           const SizedBox(
                             height: 15,
                           ),
-                          TextFormField(
-                            cursorColor: const Color(0xff212529),
+                          FormText(
                             controller: emailController,
+                            hintText: 'Alamat Email',
+                            icon: Icons.email_rounded,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              hintText: 'Alamat Email',
-                              prefixIcon: const Icon(
-                                color: Color(0xff495057),
-                                Icons.email_rounded,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  style: BorderStyle.none,
-                                  width: 0,
-                                ),
-                              ),
-                              filled: true,
-                            ),
                           ),
                           const SizedBox(
                             height: 15,
                           ),
-                          TextFormField(
-                            cursorColor: const Color(0xff212529),
+                          FormText(
                             controller: passwordController,
-                            obscureText: true,
+                            hintText: 'Password',
+                            icon: Icons.lock_rounded,
                             keyboardType: TextInputType.visiblePassword,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              prefixIcon: const Icon(
-                                color: Color(0xff495057),
-                                Icons.lock_rounded,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  style: BorderStyle.none,
-                                  width: 0,
-                                ),
-                              ),
-                              filled: true,
-                            ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           ButtonWidget(
-                            onPressed: () {
+                            onPressed: () async {
                               controller.createSeller(
                                 nameController.text,
                                 storeNameController.text,
@@ -133,6 +78,7 @@ class SignUpPage extends GetWidget<AuthController> {
                                 'https://ui-avatars.com/api/?name=${nameController.text}',
                                 passwordController.text,
                               );
+                              await locationController.getCurrentLocation();
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
                             title: 'Daftar',

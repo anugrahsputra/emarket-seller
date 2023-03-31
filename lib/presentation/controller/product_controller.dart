@@ -1,6 +1,9 @@
-import 'package:emarket_seller/services/database.dart';
+import 'dart:developer';
+
+import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../model/model.dart';
@@ -9,6 +12,7 @@ import 'controller.dart';
 class ProductController extends GetxController {
   final Database database = Database();
   RxBool isLoading = false.obs;
+  RxDouble uploadProgress = 0.0.obs;
   var uuid = const Uuid();
 
   var product = <Product>[].obs;
@@ -49,6 +53,19 @@ class ProductController extends GetxController {
     );
     await database.addProduct(product, id);
     update();
+  }
+
+  uploadProductImage(XFile image) async {
+    setLoading(true);
+    final storage = Storage();
+
+    final downloadUrl = await storage.uploadProductImage(image, (progress) {
+      log('Upload progress: $progress');
+      uploadProgress.value = progress;
+    });
+
+    newProduct['imageUrl'] = downloadUrl;
+    setLoading(false);
   }
 
   void updateName(String productId, String value) async {

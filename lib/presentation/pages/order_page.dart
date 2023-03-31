@@ -1,3 +1,4 @@
+import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
@@ -14,7 +15,7 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pesanan', style: GoogleFonts.roboto()),
+        title: Text('Pesanan', style: GoogleFonts.poppins()),
       ),
       body: GetX<OrderController>(
         init: OrderController(),
@@ -28,7 +29,7 @@ class OrderPage extends StatelessWidget {
             itemBuilder: (context, index) {
               const defaultBuyer = Buyer();
               final order = orderController.orders[index];
-              final buyer = buyerController.buyer.firstWhere(
+              final buyer = buyerController.buyers.firstWhere(
                 (buyer) => buyer.id == order.buyerId,
                 orElse: () => defaultBuyer,
               );
@@ -43,15 +44,16 @@ class OrderPage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       orderController.orders[index].displayName,
-                      style: GoogleFonts.roboto(),
+                      style: GoogleFonts.poppins(),
                     ),
                     subtitle: Text(
                       orderController.orders[index].note,
-                      style: GoogleFonts.roboto(),
+                      style: GoogleFonts.poppins(),
                     ),
                     trailing: Text(
-                      orderController.orders[index].total.toString(),
-                      style: GoogleFonts.roboto(),
+                      PriceFormatter.format(
+                          orderController.orders[index].total),
+                      style: GoogleFonts.poppins(),
                     ),
                   ),
                 ),

@@ -2,40 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 TextTheme textTheme = TextTheme(
-  bodyLarge: GoogleFonts.roboto(
+  bodyLarge: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  bodyMedium: GoogleFonts.roboto(
+  bodyMedium: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  bodySmall: GoogleFonts.roboto(
+  bodySmall: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  displayLarge: GoogleFonts.roboto(
+  displayLarge: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  displayMedium: GoogleFonts.roboto(
+  displayMedium: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  displaySmall: GoogleFonts.roboto(
+  displaySmall: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  headlineMedium: GoogleFonts.roboto(
+  headlineMedium: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  headlineSmall: GoogleFonts.roboto(
+  headlineSmall: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  titleLarge: GoogleFonts.roboto(
+  titleLarge: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  labelSmall: GoogleFonts.roboto(
+  labelSmall: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  titleMedium: GoogleFonts.roboto(
+  titleMedium: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
-  titleSmall: GoogleFonts.roboto(
+  titleSmall: GoogleFonts.poppins(
     color: const Color(0xff212529),
   ),
 );
+
+const String google_api_key = "AIzaSyAzEiYFRIekMxyA4XhsljuZu0g5TpbzSZA";

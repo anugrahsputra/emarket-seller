@@ -1,7 +1,8 @@
-import 'package:emarket_seller/model/seller.dart';
+import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import 'controller.dart';
@@ -27,16 +28,28 @@ class AuthController extends GetxController {
         email: email.trim(),
         password: password,
       );
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.bestForNavigation);
+      LocationModel location = LocationModel(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+
+      String address = await Get.find<LocationController>()
+          .getAddressFromLatLng(position.latitude, position.longitude);
       SellerModel seller = SellerModel(
         id: credential.user!.uid,
         displayName: displayName,
         storeName: storeName,
+        address: address,
+        location: location,
         email: email,
         photoUrl: photoUrl,
       );
       if (await Database().createNewSeller(seller)) {
         Get.find<SellerController>().seller = seller;
         Get.find<ProductController>().update();
+        Get.find<LocationController>().update();
         Get.back();
       }
       loading.value = false;
@@ -52,6 +65,24 @@ class AuthController extends GetxController {
         forwardAnimationCurve: Curves.easeOutBack,
         margin: const EdgeInsets.all(15),
       );
+    }
+  }
+
+  void updatePassword(String currentPassword, String newPassword) async {
+    try {
+      loading.value = true;
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user!.email!,
+        password: currentPassword,
+      );
+      await user!.reauthenticateWithCredential(credential);
+      await _auth.currentUser!.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        throw 'Password salah';
+      } else {
+        throw 'Terjadi kesalahan saat mengubah password';
+      }
     }
   }
 

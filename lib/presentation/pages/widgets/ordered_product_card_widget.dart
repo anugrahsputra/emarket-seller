@@ -39,7 +39,7 @@ class OrderedProductCard extends StatelessWidget {
             children: [
               Text(
                 cart.name,
-                style: GoogleFonts.roboto(
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -49,7 +49,7 @@ class OrderedProductCard extends StatelessWidget {
               ),
               Text(
                 'Rp. ${cart.price * cart.quantity}',
-                style: GoogleFonts.roboto(
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                 ),
               ),
@@ -58,7 +58,7 @@ class OrderedProductCard extends StatelessWidget {
           const Spacer(),
           Text(
             '${cart.quantity}x',
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
