@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 class Product extends Equatable {
   final String id;
   final String sellerId;
-  final String name;
+  late final String name;
   final String category;
   final String description;
   final String imageUrl;
@@ -15,11 +15,11 @@ class Product extends Equatable {
 
   Product({
     this.id = '',
-    required this.sellerId,
+    this.sellerId = '',
     this.name = '',
-    required this.category,
-    required this.description,
-    required this.imageUrl,
+    this.category = '',
+    this.description = '',
+    this.imageUrl = '',
     this.price = 0,
     this.quantity = 0,
   });

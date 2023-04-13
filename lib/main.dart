@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate();
   runApp(const MyApp());
 }
 
@@ -26,10 +28,8 @@ class MyApp extends StatelessWidget {
       title: 'Emarket Seller',
       initialBinding: AuthBinding(),
       theme: ThemeData(
-        primaryColor: const Color(0xff212529),
+        colorSchemeSeed: const Color(0xff212529),
         appBarTheme: AppBarTheme(
-          surfaceTintColor: const Color(0xfff8f9fa),
-          color: const Color(0xfff8f9fa),
           iconTheme: const IconThemeData(color: Color(0xff212529)),
           titleTextStyle: GoogleFonts.poppins(
             color: const Color(0xff212529),
@@ -40,11 +40,8 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: const InputDecorationTheme(
           fillColor: Color(0xffdee2e6),
         ),
-        scaffoldBackgroundColor: const Color(0xfff8f9fa),
-        cardColor: const Color(0xffa5a5a5),
-        iconTheme: const IconThemeData(
-          color: Color(0xfff8f9fa),
-        ),
+        // scaffoldBackgroundColor: const Color(0xfff8f9fa),
+
         fontFamily: GoogleFonts.poppins().fontFamily,
         textTheme: textTheme,
       ),

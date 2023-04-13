@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +12,7 @@ import 'controller.dart';
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Rxn<User> _firebaseUser = Rxn<User>();
+  final Database _database = Database();
   final loading = false.obs;
 
   User? get user => _firebaseUser.value;
@@ -20,44 +23,50 @@ class AuthController extends GetxController {
     super.onInit();
   }
 
-  void createSeller(String displayName, String storeName, String email,
-      String photoUrl, String password) async {
+  Future<void> createSeller({
+    required String displayName,
+    required String storeName,
+    required String email,
+    required String photoUrl,
+    required String password,
+    required String phoneNumber,
+  }) async {
     try {
       loading.value = true;
-      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+      final credential = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
-        password: password,
+        password: password.trim(),
       );
-      Position position = await Geolocator.getCurrentPosition(
+      final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.bestForNavigation);
-      LocationModel location = LocationModel(
+      final location = LocationModel(
         latitude: position.latitude,
         longitude: position.longitude,
       );
 
-      String address = await Get.find<LocationController>()
+      final address = await Get.find<LocationController>()
           .getAddressFromLatLng(position.latitude, position.longitude);
-      SellerModel seller = SellerModel(
+      final seller = SellerModel(
         id: credential.user!.uid,
         displayName: displayName,
         storeName: storeName,
+        phoneNumber: '+62$phoneNumber',
         address: address,
         location: location,
-        email: email,
+        email: email.trim(),
         photoUrl: photoUrl,
       );
-      if (await Database().createNewSeller(seller)) {
+      if (await _database.createNewSeller(seller)) {
         Get.find<SellerController>().seller = seller;
         Get.find<ProductController>().update();
         Get.find<LocationController>().update();
-        Get.back();
+        Get.offNamedUntil('/main-page', (route) => false);
       }
-      loading.value = false;
     } catch (e) {
-      loading.value = false;
+      log(e.toString());
       Get.snackbar(
         "Error creating Account",
-        'Mohon Diisi Dengan Benar',
+        '$e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color(0xff343a40),
         colorText: const Color(0xfff8f9fa),
@@ -65,13 +74,16 @@ class AuthController extends GetxController {
         forwardAnimationCurve: Curves.easeOutBack,
         margin: const EdgeInsets.all(15),
       );
+    } finally {
+      loading.value = false;
     }
   }
 
-  void updatePassword(String currentPassword, String newPassword) async {
+  Future<void> updatePassword(
+      {required String currentPassword, required String newPassword}) async {
     try {
       loading.value = true;
-      AuthCredential credential = EmailAuthProvider.credential(
+      final credential = EmailAuthProvider.credential(
         email: user!.email!,
         password: currentPassword,
       );
@@ -83,22 +95,23 @@ class AuthController extends GetxController {
       } else {
         throw 'Terjadi kesalahan saat mengubah password';
       }
+    } finally {
+      loading.value = false;
     }
   }
 
-  void signIn(String email, String password) async {
+  Future<void> signIn({required String email, required String password}) async {
     try {
       loading.value = true;
-      UserCredential credential = await _auth.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       Get.find<SellerController>().seller =
-          (await Database().getSeller(credential.user!.uid))!;
+          (await _database.getSeller(credential.user!.uid))!;
       Get.find<SellerController>().update();
       Get.find<ProductController>().update();
-      Get.back();
-      loading.value = false;
+      Get.offNamedUntil('/main-page', (route) => false);
     } catch (e) {
-      loading.value = false;
+      log(e.toString());
       Get.snackbar(
         "Error signing in",
         "check your email and password",
@@ -109,14 +122,17 @@ class AuthController extends GetxController {
         forwardAnimationCurve: Curves.easeInOut,
         margin: const EdgeInsets.all(15),
       );
+    } finally {
+      loading.value = false;
     }
   }
 
-  void signOut() async {
+  Future<void> signOut() async {
     try {
       await _auth.signOut();
       Get.find<SellerController>().clear();
-      // Get.find<ProductController>().clearProducts();
+      _database.terminate();
+      Get.offNamedUntil('/signin', (route) => false);
     } catch (e) {
       Get.snackbar(
         "Error signing out",

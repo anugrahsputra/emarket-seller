@@ -53,7 +53,7 @@ class ProfileEditPage extends StatelessWidget {
             ),
             FormText(
               hintText: seller.displayName,
-              icon: Icons.person,
+              prefixIcon: const Icon(Icons.person),
               keyboardType: TextInputType.name,
               controller: nameController,
             ),
@@ -70,7 +70,7 @@ class ProfileEditPage extends StatelessWidget {
                       'displayName', seller.displayName);
                 }
                 sellerController.uploadProfileImage();
-                Get.offAll(() => MainPage());
+                Get.back();
               },
               title: 'Update',
             ),

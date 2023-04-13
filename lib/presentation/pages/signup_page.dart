@@ -8,6 +8,7 @@ class SignUpPage extends GetWidget<AuthController> {
   final storeNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final phoneNumberController = TextEditingController();
 
   final LocationController locationController = Get.put(LocationController());
 
@@ -28,7 +29,7 @@ class SignUpPage extends GetWidget<AuthController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 180,
+                      height: 140,
                     ),
                     Form(
                       child: Column(
@@ -36,7 +37,7 @@ class SignUpPage extends GetWidget<AuthController> {
                           FormText(
                             controller: nameController,
                             hintText: 'Nama',
-                            icon: Icons.person,
+                            prefixIcon: const Icon(Icons.person_rounded),
                             keyboardType: TextInputType.name,
                           ),
                           const SizedBox(
@@ -45,7 +46,7 @@ class SignUpPage extends GetWidget<AuthController> {
                           FormText(
                             controller: storeNameController,
                             hintText: 'Nama Toko/usaha',
-                            icon: Icons.store_rounded,
+                            prefixIcon: const Icon(Icons.store_rounded),
                             keyboardType: TextInputType.name,
                           ),
                           const SizedBox(
@@ -54,16 +55,38 @@ class SignUpPage extends GetWidget<AuthController> {
                           FormText(
                             controller: emailController,
                             hintText: 'Alamat Email',
-                            icon: Icons.email_rounded,
+                            prefixIcon: const Icon(Icons.email_rounded),
                             keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(
                             height: 15,
                           ),
                           FormText(
+                            controller: phoneNumberController,
+                            hintText: 'Nomor Telepon',
+                            prefixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.phone_rounded),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('+62'),
+                              ],
+                            ),
+                            keyboardType: TextInputType.phone,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          FormText(
                             controller: passwordController,
+                            obscureText: true,
                             hintText: 'Password',
-                            icon: Icons.lock_rounded,
+                            prefixIcon: const Icon(Icons.lock_rounded),
                             keyboardType: TextInputType.visiblePassword,
                           ),
                           const SizedBox(
@@ -72,11 +95,13 @@ class SignUpPage extends GetWidget<AuthController> {
                           ButtonWidget(
                             onPressed: () async {
                               controller.createSeller(
-                                nameController.text,
-                                storeNameController.text,
-                                emailController.text,
-                                'https://ui-avatars.com/api/?name=${nameController.text}',
-                                passwordController.text,
+                                displayName: nameController.text,
+                                storeName: storeNameController.text,
+                                email: emailController.text,
+                                photoUrl:
+                                    'https://ui-avatars.com/api/?name=${nameController.text}',
+                                password: passwordController.text,
+                                phoneNumber: phoneNumberController.text,
                               );
                               await locationController.getCurrentLocation();
                               FocusManager.instance.primaryFocus?.unfocus();

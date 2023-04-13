@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
         title: const Text('Profile'),
       ),
       body: Center(
-        child: GetX<SellerController>(
+        child: GetBuilder<SellerController>(
           initState: (_) async {
             controller.seller = (await database.getSeller(
               authController.user!.uid,
@@ -215,7 +215,6 @@ class ProfilePage extends StatelessWidget {
           IconButton(
             onPressed: () {
               authController.signOut();
-              Get.delete<ProductController>();
             },
             icon: const Icon(Icons.logout),
           ),

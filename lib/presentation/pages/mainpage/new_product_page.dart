@@ -25,7 +25,6 @@ class NewProductPage extends StatelessWidget {
       'Minuman',
     ];
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Tambah Produk'),
       ),

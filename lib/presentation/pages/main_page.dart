@@ -35,11 +35,11 @@ class MainPage extends StatelessWidget {
     return GetBuilder<BottomNavbarController>(
       builder: (_) {
         return Scaffold(
-          body: pageList[controller.tabIndex.value],
+          body: controller.getCurrentPage,
           bottomNavigationBar: NavigationBar(
             destinations: navigationDestinations,
             onDestinationSelected: (index) {
-              controller.changedTabIndex(index);
+              controller.changePage(index);
             },
             selectedIndex: controller.tabIndex.value,
           ),

@@ -37,7 +37,7 @@ class SellerController extends GetxController {
     update();
   }
 
-  fetchSeller() async {
+  Future<void> fetchSeller() async {
     try {
       loading.value = true;
       final User user = FirebaseAuth.instance.currentUser!;
@@ -50,17 +50,18 @@ class SellerController extends GetxController {
     }
   }
 
-  void updateSellerInfo(String field, dynamic newValue) async {
+  Future<void> updateSellerInfo(String field, dynamic newValue) async {
     String id = Get.find<AuthController>().user!.uid;
     try {
       await database.updateSellerInfo(id, field, newValue);
       log('Seller info updated');
+      update();
     } catch (e) {
       log(e.toString());
     }
   }
 
-  void selectNewProfilePicture() async {
+  Future<void> selectNewProfilePicture() async {
     final ImagePicker imagePicker = ImagePicker();
     final XFile? image =
         await imagePicker.pickImage(source: ImageSource.gallery);
@@ -69,24 +70,25 @@ class SellerController extends GetxController {
     }
   }
 
-  uploadProfileImage() async {
-    if (newProfilePicture == null) {
-      return;
+  Future<void> uploadProfileImage() async {
+    try {
+      if (newProfilePicture != null) {
+        setLoading(true);
+        final storage = Storage();
+
+        final downloadUrl = await storage
+            .uploadProfileImage(newProfilePicture.value!, (progress) {
+          uploadProgress.value = progress;
+        });
+
+        await updateSellerInfo('photoUrl', downloadUrl);
+        update();
+        setLoading(false);
+      } else {
+        log('No new profile picture selected');
+      }
+    } catch (e) {
+      log(e.toString());
     }
-    setLoading(true);
-    final storage = Storage();
-
-    final downloadUrl =
-        await storage.uploadProfileImage(newProfilePicture.value!, (progress) {
-      log('Upload progress: $progress');
-      uploadProgress.value = progress;
-    });
-
-    updateSellerInfo('photoUrl', downloadUrl);
-    setLoading(false);
-  }
-
-  void cancelNewProfilePicture() {
-    newProfilePicture.value = null;
   }
 }

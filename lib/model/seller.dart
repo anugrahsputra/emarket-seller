@@ -6,6 +6,7 @@ class SellerModel extends Equatable {
   final String? id;
   final String displayName;
   final String storeName;
+  final String phoneNumber;
   final String address;
   final LocationModel location;
   final String email;
@@ -14,6 +15,7 @@ class SellerModel extends Equatable {
     this.id,
     this.displayName = '',
     this.storeName = '',
+    this.phoneNumber = '',
     this.address = '',
     this.location = const LocationModel(),
     this.email = '',
@@ -25,6 +27,7 @@ class SellerModel extends Equatable {
       id: snap.id,
       displayName: snap['displayName'],
       storeName: snap['storeName'],
+      phoneNumber: snap['phoneNumber'],
       address: snap['address'],
       location: LocationModel.fromMap(snap['location']),
       email: snap['email'],
@@ -37,6 +40,7 @@ class SellerModel extends Equatable {
       'id': id,
       'displayName': displayName,
       'storeName': storeName,
+      'phoneNumber': phoneNumber,
       'address': address,
       'location': location.toMap(),
       'email': email,
@@ -48,6 +52,7 @@ class SellerModel extends Equatable {
     String? id,
     String? displayName,
     String? storeName,
+    String? phoneNumber,
     String? address,
     LocationModel? location,
     String? email,
@@ -57,6 +62,7 @@ class SellerModel extends Equatable {
       id: id ?? this.id,
       displayName: displayName ?? this.displayName,
       storeName: storeName ?? this.storeName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       address: address ?? this.address,
       location: location ?? this.location,
       email: email ?? this.email,
@@ -69,6 +75,7 @@ class SellerModel extends Equatable {
         id,
         displayName,
         storeName,
+        phoneNumber,
         address,
         location,
         email,

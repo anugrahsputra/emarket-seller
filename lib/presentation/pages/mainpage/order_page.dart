@@ -9,19 +9,19 @@ import 'package:google_fonts/google_fonts.dart';
 class OrderPage extends StatelessWidget {
   OrderPage({Key? key}) : super(key: key);
 
-  final OrderController orderController = Get.put(OrderController());
-  final BuyerController buyerController = Get.put(BuyerController());
+  final ProductController productController = Get.put(ProductController());
+
   @override
   Widget build(BuildContext context) {
+    final OrderController orderController = Get.put(OrderController());
+    final BuyerController buyerController = Get.put(BuyerController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesanan', style: GoogleFonts.poppins()),
       ),
       body: GetX<OrderController>(
         init: OrderController(),
-        initState: (_) {
-          orderController.getOrders();
-        },
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
           return ListView.builder(
@@ -29,9 +29,20 @@ class OrderPage extends StatelessWidget {
             itemBuilder: (context, index) {
               const defaultBuyer = Buyer();
               final order = orderController.orders[index];
+              final cartLength = order.cart.length;
+              final carts = orderController.orders[index].cart[cartLength - 1];
               final buyer = buyerController.buyers.firstWhere(
                 (buyer) => buyer.id == order.buyerId,
                 orElse: () => defaultBuyer,
+              );
+              final cart = Cart(
+                name: carts.name,
+                price: carts.price,
+                productId: carts.productId,
+                quantity: carts.quantity,
+                sellerId: carts.sellerId,
+                imageUrl: carts.imageUrl,
+                storeName: carts.storeName,
               );
               return GestureDetector(
                 onTap: () {
@@ -41,6 +52,7 @@ class OrderPage extends StatelessWidget {
                       ));
                 },
                 child: Card(
+                  key: ValueKey(order.id), // <--- Key
                   child: ListTile(
                     title: Text(
                       orderController.orders[index].displayName,
@@ -55,6 +67,11 @@ class OrderPage extends StatelessWidget {
                           orderController.orders[index].total),
                       style: GoogleFonts.poppins(),
                     ),
+                    tileColor: order.isCancelled
+                        ? Colors.red[100]
+                        : order.isProcessing
+                            ? Colors.green[100]
+                            : Colors.yellow[100],
                   ),
                 ),
               );

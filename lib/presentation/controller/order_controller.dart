@@ -1,12 +1,12 @@
 import 'package:emarket_seller/model/model.dart';
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:get/get.dart';
-
-import 'auth_controller.dart';
 
 class OrderController extends GetxController {
   final Database database = Database();
   final orders = RxList<Orders>([]);
+  final carts = RxList<Cart>([]);
   final isProcessing = false.obs;
   final isCancelled = false.obs;
 
@@ -19,15 +19,33 @@ class OrderController extends GetxController {
   getOrders() async {
     String sellerId = Get.find<AuthController>().user!.uid;
     orders.bindStream(database.getOrders(sellerId));
+    update();
   }
 
-  processOrder(Orders order, String field, bool value) async {
-    await database.updateOrderStatus(order, field, value);
+  processOrder(
+      Orders order, String field, bool value, List<Cart> cartList) async {
+    String sellerId = Get.find<AuthController>().user!.uid;
+    final productController = Get.find<ProductController>();
+
+    for (Cart cart in cartList) {
+      final product = productController.products.firstWhere(
+        (product) => product.id == cart.productId,
+        orElse: () => Product(),
+      );
+      final newQuantity = product.quantity - cart.quantity;
+
+      await database.updateOrderStatus(order.id, order.buyerId, field, value);
+      await database.updateProduct(
+          sellerId, cart.productId, 'quantity', newQuantity);
+    }
+
     isProcessing.value = value;
+    update();
   }
 
   cancelOrder(Orders order, String field, bool value) async {
-    await database.updateOrderStatus(order, field, value);
-    isCancelled.value = true;
+    await database.updateOrderStatus(order.id, order.buyerId, field, value);
+    isCancelled.value = value;
+    update();
   }
 }

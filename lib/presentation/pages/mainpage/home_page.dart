@@ -21,7 +21,6 @@ class Homepage extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () {
               controller.signOut();
-              Get.delete<ProductController>();
             },
           )
         ],
@@ -70,7 +69,7 @@ class Homepage extends StatelessWidget {
             Expanded(
               child: GetX<ProductController>(
                 builder: (productController) {
-                  if (productController.product.isEmpty) {
+                  if (productController.products.isEmpty) {
                     return const Center(
                       child: Text('Tidak ada produk'),
                     );
@@ -80,11 +79,17 @@ class Homepage extends StatelessWidget {
                     );
                   } else {
                     return ListView.builder(
-                      itemCount: productController.product.length,
+                      itemCount: productController.products.length,
                       itemBuilder: (context, index) {
-                        return ProductCard(
-                          index: controller.user!.uid,
-                          product: productController.product[index],
+                        return GestureDetector(
+                          child: ProductCard(
+                            index: controller.user!.uid,
+                            product: productController.products[index],
+                          ),
+                          onTap: () {
+                            Get.to(() => DetailProductPage(
+                                product: productController.products[index]));
+                          },
                         );
                       },
                     );

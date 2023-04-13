@@ -4,7 +4,6 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductCard extends StatelessWidget {
@@ -16,244 +15,94 @@ class ProductCard extends StatelessWidget {
 
   final Product product;
   final String index;
-
   final ProductController productController = Get.find<ProductController>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
-  Database database = Database();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+  final Database database = Database();
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.dialog(
-          Dialog(
-            insetAnimationCurve: Curves.easeInOut,
-            insetAnimationDuration: const Duration(milliseconds: 300),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+    return Card(
+      color: const Color(0xffdee2e6),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: Image(
+                image: NetworkImage(
+                  product.imageUrl,
+                ),
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Shimmer.fromColors(
+                        baseColor: const Color(0xffa5a5a5),
+                        highlightColor: const Color(0xfff8f9fa),
+                        child: Container(
+                          color: const Color(0xff212529),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-            child: SizedBox(
-              width: double.infinity,
-              height: 250,
+            Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        'Edit Product',
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        floatingLabelStyle: const TextStyle(
-                          color: Color(0xff212529),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xff212529),
-                          ),
-                        ),
-                        border: const OutlineInputBorder(),
-                        labelText: product.name,
+                    Text(
+                      'Harga: ${PriceFormatter.format(product.price)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: priceController,
-                            decoration: InputDecoration(
-                              floatingLabelStyle: const TextStyle(
-                                color: Color(0xff212529),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xff212529),
-                                ),
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: PriceFormatter.format(product.price),
-                            ),
-                            onChanged: (value) {
-                              productController.newProduct.update(
-                                'price',
-                                (_) => double.parse(value),
-                                ifAbsent: () => double.parse(value),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            controller: quantityController,
-                            decoration: InputDecoration(
-                              floatingLabelStyle: const TextStyle(
-                                color: Color(0xff212529),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xff212529),
-                                ),
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: product.quantity.toString(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: FilledButton.tonal(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffadb5bd),
-                              ),
-                            ),
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text('Batal'),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: FilledButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                const Color(0xff495057),
-                              ),
-                            ),
-                            onPressed: () async {
-                              int newPrice = int.parse(priceController.text);
-                              int newQuantity =
-                                  int.parse(quantityController.text);
-                              productController.updateName(
-                                  product.id, nameController.text);
-                              productController.updatePrice(
-                                  product.id, newPrice);
-                              productController.updateQuantity(
-                                  product.id, newQuantity);
-                              Get.back();
-                            },
-                            child: const Text('Simpan'),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Stock: ${product.quantity}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        );
-      },
-      child: Card(
-        color: const Color(0xffdee2e6),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: Image(
-                  image: NetworkImage(
-                    product.imageUrl,
-                  ),
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: Shimmer.fromColors(
-                          baseColor: const Color(0xffa5a5a5),
-                          highlightColor: const Color(0xfff8f9fa),
-                          child: Container(
-                            color: const Color(0xff212529),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+            IconButton(
+              onPressed: () async {
+                productController.deleteProduct(product);
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Color(0xffdc3545),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        product.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Harga: ${PriceFormatter.format(product.price)}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        'Stock: ${product.quantity}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  productController.deleteProduct(product);
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  color: Color(0xffdc3545),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

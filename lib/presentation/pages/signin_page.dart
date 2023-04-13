@@ -71,8 +71,8 @@ class SignInPage extends GetWidget<AuthController> {
               ButtonWidget(
                 onPressed: () {
                   controller.signIn(
-                    emailController.text,
-                    passwordController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
                   );
                   FocusManager.instance.primaryFocus?.unfocus();
                 },

@@ -3,7 +3,7 @@ import 'package:emarket_seller/model/model.dart';
 import 'package:equatable/equatable.dart';
 
 class Buyer extends Equatable {
-  final String? id;
+  final String id;
   final String displayName;
   final String email;
   final String phoneNumber;
@@ -11,7 +11,7 @@ class Buyer extends Equatable {
   final String address;
   final String photoUrl;
   const Buyer({
-    this.id,
+    this.id = '',
     this.displayName = '',
     this.location = const LocationModel(),
     this.address = '',

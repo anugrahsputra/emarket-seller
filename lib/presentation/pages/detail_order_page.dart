@@ -4,23 +4,27 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/pages/maps_page.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailOrder extends StatelessWidget {
-  const DetailOrder({Key? key, required this.order, required this.buyer})
-      : super(key: key);
+  DetailOrder({
+    Key? key,
+    required this.order,
+    required this.buyer,
+  }) : super(key: key);
 
   final Orders order;
   final Buyer buyer;
+  final ProductController productController = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
     final OrderController orderController = Get.put(OrderController());
-    final buyersOrder = orderController.orders
-        .where((element) => element.buyerId == buyer.id)
-        .toList();
+
     return Scaffold(
+      key: ValueKey(order.id),
       appBar: AppBar(
         title: const Text('Detail Order'),
       ),
@@ -49,28 +53,26 @@ class DetailOrder extends StatelessWidget {
                       fontSize: 25,
                     ),
                   ),
-                  Obx(
-                    () => orderController.isCancelled.value
-                        ? Text(
-                            'Pesanan ditolak',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                            ),
-                          )
-                        : orderController.isProcessing.value
-                            ? Text(
-                                'Sedang Diproses',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                ),
-                              )
-                            : Text(
-                                'Belum Diproses',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                ),
+                  order.isCancelled
+                      ? Text(
+                          'Pesanan ditolak',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                          ),
+                        )
+                      : order.isProcessing
+                          ? Text(
+                              'Sedang Diproses',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
                               ),
-                  )
+                            )
+                          : Text(
+                              'Belum Diproses',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                              ),
+                            ),
                 ],
               ),
               const SizedBox(
@@ -237,12 +239,19 @@ class DetailOrder extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FilledButton(
-                    onPressed: () {
-                      orderController.processOrder(
-                        order,
-                        'isProcessing',
-                        !orderController.isProcessing.value,
+                    onPressed: () async {
+                      orderController.processOrder(order, 'isProcessing',
+                          !orderController.isProcessing.value, order.cart);
+                      Fluttertoast.showToast(
+                        msg: 'Pesanan diterima. Segera antar pesanan!',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.green[100],
+                        textColor: Colors.black,
+                        fontSize: 16.0,
                       );
+                      Get.back();
                     },
                     child: Text(
                       'Terima Pesanan',
@@ -262,6 +271,16 @@ class DetailOrder extends StatelessWidget {
                         'isCancelled',
                         !orderController.isCancelled.value,
                       );
+                      Fluttertoast.showToast(
+                        msg: 'Pesanan ditolak',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red[100],
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      Get.back();
                     },
                     child: Text(
                       'Tolak Pesanan',
@@ -276,6 +295,31 @@ class DetailOrder extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showConfirmationDialog(
+      BuildContext context, String message, VoidCallback onPressed) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: onPressed,
+              child: const Text('Ya'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

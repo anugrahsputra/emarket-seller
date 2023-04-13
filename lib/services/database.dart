@@ -70,6 +70,24 @@ class Database {
     }
   }
 
+  Future<Product?> product(String id, Product product) async {
+    if (_auth.currentUser == null) {
+      return null;
+    }
+    try {
+      DocumentSnapshot doc = await _firestore
+          .collection('sellers')
+          .doc(id)
+          .collection('products')
+          .doc(product.id)
+          .get();
+      return Product.fromSnapshot(doc);
+    } catch (e) {
+      log(e.toString());
+      return Product();
+    }
+  }
+
   Stream<List<Product>> getProduct(String id) {
     if (_auth.currentUser == null) {
       // Return an empty stream if user is not authenticated
@@ -149,7 +167,8 @@ class Database {
   }
 
   Future<void> updateOrderStatus(
-    Orders order,
+    String orderId,
+    String buyerId,
     String field,
     bool newValue,
   ) async {
@@ -158,12 +177,10 @@ class Database {
     }
     return _firestore
         .collection('buyers')
-        .doc(order.buyerId)
+        .doc(buyerId)
         .collection('checkout')
-        .where('id', isEqualTo: order.id)
-        .get()
-        .then((querySnaphot) =>
-            querySnaphot.docs.first.reference.update({field: newValue}));
+        .doc(orderId)
+        .update({field: newValue});
   }
 
   Stream<List<Buyer>> getBuyer() {
@@ -178,5 +195,9 @@ class Database {
       log(e.toString());
       return const Stream.empty();
     }
+  }
+
+  void terminate() {
+    _firestore.terminate();
   }
 }
