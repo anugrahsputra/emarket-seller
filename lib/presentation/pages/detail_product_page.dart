@@ -17,7 +17,6 @@ class DetailProductPage extends GetWidget<ProductController> {
 
   @override
   Widget build(BuildContext context) {
-    final productController = Get.put(ProductController());
     WidgetsBinding.instance.addPostFrameCallback((time) {
       Future.delayed(const Duration(seconds: 3), () {
         if (product.quantity < 5) {
@@ -35,7 +34,7 @@ class DetailProductPage extends GetWidget<ProductController> {
     );
   }
 
-  void showAlertDialog(BuildContext context, String productName) {
+  showAlertDialog(BuildContext context, String productName) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
