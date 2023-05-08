@@ -50,10 +50,10 @@ class SellerController extends GetxController {
     }
   }
 
-  Future<void> updateSellerInfo(String field, dynamic newValue) async {
+  Future<void> updateSellerInfo(Map<String, dynamic> data) async {
     String id = Get.find<AuthController>().user!.uid;
     try {
-      await database.updateSellerInfo(id, field, newValue);
+      await database.updateSellerInfo(id, data);
       log('Seller info updated');
       update();
     } catch (e) {
@@ -81,7 +81,12 @@ class SellerController extends GetxController {
           uploadProgress.value = progress;
         });
 
-        await updateSellerInfo('photoUrl', downloadUrl);
+        Map<String, String> photoUrl = {
+          'photoUrl':
+              newProfilePicture.value == null ? seller.photoUrl : downloadUrl,
+        };
+
+        await updateSellerInfo(photoUrl);
         update();
         setLoading(false);
       } else {

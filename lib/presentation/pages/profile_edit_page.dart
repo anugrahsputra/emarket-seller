@@ -18,6 +18,7 @@ class ProfileEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
@@ -62,15 +63,16 @@ class ProfileEditPage extends StatelessWidget {
             ),
             ButtonWidget(
               onPressed: () async {
-                if (nameController.text.isNotEmpty) {
-                  sellerController.updateSellerInfo(
-                      'displayName', nameController.text);
-                } else {
-                  sellerController.updateSellerInfo(
-                      'displayName', seller.displayName);
-                }
-                sellerController.uploadProfileImage();
+                Map<String, dynamic> data = {
+                  'displayName': nameController.text.isNotEmpty
+                      ? nameController.text
+                      : seller.displayName,
+                };
+                await sellerController.updateSellerInfo(data);
+                await sellerController.uploadProfileImage();
+                await sellerController.fetchSeller();
                 Get.back();
+                sellerController.update();
               },
               title: 'Update',
             ),

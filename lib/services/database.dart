@@ -36,15 +36,12 @@ class Database {
   }
 
   Future<bool?> updateSellerInfo(
-      String sellerId, String field, dynamic newValue) async {
+      String sellerId, Map<String, dynamic> data) async {
     if (_auth.currentUser == null) {
       return null; // Return null if user is not authenticated
     }
     try {
-      await _firestore
-          .collection('sellers')
-          .doc(sellerId)
-          .update({field: newValue});
+      await _firestore.collection('sellers').doc(sellerId).update(data);
       return true;
     } catch (e) {
       log(e.toString());
