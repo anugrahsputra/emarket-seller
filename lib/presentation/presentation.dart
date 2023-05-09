@@ -1,3 +1,4 @@
+export 'pages/account_edit_page.dart';
 export 'pages/detail_order_page.dart';
 export 'pages/detail_product_page.dart';
 export 'pages/main_page.dart';

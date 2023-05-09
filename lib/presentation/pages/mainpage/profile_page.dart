@@ -1,5 +1,4 @@
 import 'package:emarket_seller/presentation/controller/controller.dart';
-import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +14,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Profile'),
       ),
@@ -56,11 +56,8 @@ class ProfilePage extends StatelessWidget {
                           'Edit Profil',
                           Icons.person,
                           () {
-                            Get.to(
-                              () => ProfileEditPage(
-                                seller: controller.seller,
-                              ),
-                            );
+                            Get.toNamed('/edit-profile-page',
+                                arguments: controller.seller);
                           },
                         ),
                         const Divider(
@@ -70,7 +67,9 @@ class ProfilePage extends StatelessWidget {
                         cards(
                           'Edit Akun',
                           Icons.lock,
-                          () {},
+                          () {
+                            Get.toNamed('/edit-account-page');
+                          },
                         ),
                       ],
                     ),

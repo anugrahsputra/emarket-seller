@@ -21,6 +21,20 @@ class Routes {
       page: () => ProfilePage(),
     ),
     GetPage(
+      name: '/detail-product-page',
+      page: () => DetailProductPage(
+        product: Get.arguments,
+      ),
+    ),
+    GetPage(
+      name: '/edit-profile-page',
+      page: () => ProfileEditPage(seller: Get.arguments),
+    ),
+    GetPage(
+      name: '/edit-account-page',
+      page: () => AccountEditPage(),
+    ),
+    GetPage(
       name: '/new-product-page',
       page: () => NewProductPage(),
     ),

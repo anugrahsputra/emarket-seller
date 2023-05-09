@@ -87,8 +87,8 @@ class Homepage extends StatelessWidget {
                             product: productController.products[index],
                           ),
                           onTap: () {
-                            Get.to(() => DetailProductPage(
-                                product: productController.products[index]));
+                            Get.toNamed('/detail-product-page',
+                                arguments: productController.products[index]);
                           },
                         );
                       },

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:emarket_seller/model/seller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,6 +11,7 @@ import 'controller.dart';
 
 class SellerController extends GetxController {
   final Rx<SellerModel> _seller = const SellerModel().obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final Database database = Database();
   final loading = false.obs;
   RxDouble uploadProgress = 0.0.obs;
@@ -94,6 +96,26 @@ class SellerController extends GetxController {
       }
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  Future<void> updateAccount(String email, String password) async {
+    try {
+      setLoading(true);
+      final user = _auth.currentUser!;
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      await user.reauthenticateWithCredential(credential);
+      await _auth.currentUser!.updateEmail(email);
+      await updateSellerInfo({'email': email.isEmpty ? seller.email : email});
+      update();
+    } catch (e) {
+      debugPrint('Error updating email: $e');
+      rethrow;
+    } finally {
+      setLoading(false);
     }
   }
 }
