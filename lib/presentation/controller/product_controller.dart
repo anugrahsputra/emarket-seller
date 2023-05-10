@@ -47,14 +47,6 @@ class ProductController extends GetxController {
       for (var product in products) {
         products.add(product);
       }
-
-      WidgetsBinding.instance.addPostFrameCallback((time) {
-        Future.delayed(const Duration(seconds: 2), () {
-          if (product.quantity < 5) {
-            showAlertDialog(Get.context!, product);
-          }
-        });
-      });
       update();
     } catch (e) {
       debugPrint('Error fetching product: $e');
@@ -164,26 +156,6 @@ class ProductController extends GetxController {
     await database.deleteProduct(product, id);
     debugPrint('Product deleted: $product');
     update();
-  }
-
-  void showAlertDialog(BuildContext context, Product product) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Peringatan'),
-          content: Text('Stok ${product.name} kurang dari 5'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void clearProducts() {
