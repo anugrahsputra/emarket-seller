@@ -12,7 +12,6 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    locationController.checkPermission();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
