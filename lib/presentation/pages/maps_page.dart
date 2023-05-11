@@ -24,13 +24,43 @@ class _MapPageState extends State<MapPage> {
   PolylinePoints polylinePoints = PolylinePoints();
 
   Map<PolylineId, Polyline> polylines = {};
+  Set<Marker> markers = {};
 
   void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+    setState(() {
+      mapController = controller;
+    });
   }
 
   @override
   void initState() {
+    markers.add(
+      Marker(
+          markerId: const MarkerId('buyerLoc'),
+          position: LatLng(
+            widget.buyer.location.latitude,
+            widget.buyer.location.longitude,
+          ),
+          infoWindow: InfoWindow(
+            title: widget.buyer.displayName,
+            snippet: widget.buyer.address,
+          ),
+          icon: BitmapDescriptor.defaultMarker),
+    );
+    markers.add(
+      Marker(
+        markerId: const MarkerId('sellerLoc'),
+        position: LatLng(
+          sellerController.seller.location.latitude,
+          sellerController.seller.location.longitude,
+        ),
+        infoWindow: InfoWindow(
+          title: sellerController.seller.displayName,
+          snippet: sellerController.seller.address,
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      ),
+    );
     getDirections();
     super.initState();
   }
@@ -82,6 +112,7 @@ class _MapPageState extends State<MapPage> {
       body: GetBuilder<SellerController>(
         builder: (controller) {
           return GoogleMap(
+            mapType: MapType.normal,
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: LatLng(
@@ -90,30 +121,7 @@ class _MapPageState extends State<MapPage> {
               ),
               zoom: 16,
             ),
-            markers: {
-              Marker(
-                markerId: const MarkerId('buyerLoc'),
-                position: LatLng(
-                  widget.buyer.location.latitude,
-                  widget.buyer.location.longitude,
-                ),
-                infoWindow: InfoWindow(
-                  title: widget.buyer.displayName,
-                  snippet: widget.buyer.address,
-                ),
-              ),
-              Marker(
-                markerId: const MarkerId('sellerLoc'),
-                position: LatLng(
-                  sellerController.seller.location.latitude,
-                  sellerController.seller.location.longitude,
-                ),
-                infoWindow: InfoWindow(
-                  title: sellerController.seller.displayName,
-                  snippet: sellerController.seller.address,
-                ),
-              ),
-            },
+            markers: markers,
             polylines: Set<Polyline>.of(polylines.values),
           );
         },

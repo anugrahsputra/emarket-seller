@@ -14,9 +14,9 @@ class NewProductPage extends StatelessWidget {
 
   final ProductController productController = Get.put(ProductController());
   final AuthController controller = Get.find<AuthController>();
-  Storage storage = Storage();
-  Database database = Database();
-  var uuid = const Uuid();
+  final Storage storage = Storage();
+  final Database database = Database();
+  final uuid = const Uuid();
 
   @override
   Widget build(BuildContext context) {

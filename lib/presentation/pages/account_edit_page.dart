@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 class AccountEditPage extends StatelessWidget {
   AccountEditPage({Key? key}) : super(key: key);
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  SellerController controller = Get.put(SellerController());
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final SellerController controller = Get.put(SellerController());
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
 
   final SellerController controller = Get.put(SellerController());
   final AuthController authController = Get.find<AuthController>();
-  Database database = Database();
+  final Database database = Database();
 
   @override
   Widget build(BuildContext context) {

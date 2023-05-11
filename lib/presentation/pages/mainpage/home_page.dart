@@ -34,13 +34,13 @@ class Homepage extends StatelessWidget {
                 onTap: () {
                   Get.toNamed('/new-product-page');
                 },
-                child: Card(
+                child: const Card(
                   margin: EdgeInsets.zero,
-                  color: const Color(0xff495057),
+                  color: Color(0xff495057),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(12.0),
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(
                           Icons.add_circle,
                           color: Colors.white,

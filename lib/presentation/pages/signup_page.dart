@@ -64,9 +64,9 @@ class SignUpPage extends GetWidget<AuthController> {
                           FormText(
                             controller: phoneNumberController,
                             hintText: 'Nomor Telepon',
-                            prefixIcon: Row(
+                            prefixIcon: const Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: const [
+                              children: [
                                 SizedBox(
                                   width: 10,
                                 ),

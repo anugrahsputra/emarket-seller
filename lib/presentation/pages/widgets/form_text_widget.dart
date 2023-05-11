@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormText extends StatelessWidget {
-  FormText({
+  const FormText({
     super.key,
     required this.controller,
     required this.hintText,
@@ -14,9 +14,9 @@ class FormText extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final Widget prefixIcon;
-  TextInputType keyboardType;
-  bool obscureText;
-  String prefixText;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final String prefixText;
 
   @override
   Widget build(BuildContext context) {
