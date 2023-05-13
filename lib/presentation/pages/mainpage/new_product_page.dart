@@ -3,10 +3,8 @@ import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:emarket_seller/services/database.dart';
 import 'package:emarket_seller/services/storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class NewProductPage extends StatelessWidget {
@@ -86,24 +84,7 @@ class NewProductPage extends StatelessWidget {
                       ),
                     ),
                     onTap: () async {
-                      ImagePicker picker = ImagePicker();
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
-
-                      if (image == null) {
-                        Fluttertoast.showToast(
-                            msg: 'Tidak ada gambar yang dipilih');
-                      }
-                      if (image != null) {
-                        // await storage.uploadImage(image, ); // <== HERE
-                        await productController.uploadProductImage(image);
-                        var imageUrl = await storage.getProductUrl(image.name);
-                        productController.newProduct.update(
-                          'imageUrl',
-                          (_) => imageUrl,
-                          ifAbsent: () => imageUrl,
-                        );
-                      }
+                      productController.pickProductImage();
                     },
                   ),
                   const SizedBox(

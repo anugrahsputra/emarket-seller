@@ -37,6 +37,7 @@ dependencies:
   firebase_app_check: ^0.1.2
   firebase_auth: ^4.2.10
   firebase_core: ^2.4.1
+  firebase_messaging: ^14.6.0
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter

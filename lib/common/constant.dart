@@ -40,4 +40,4 @@ TextTheme textTheme = TextTheme(
   ),
 );
 
-const String google_api_key = "AIzaSyAzEiYFRIekMxyA4XhsljuZu0g5TpbzSZA";
+const String googleApiKey = "AIzaSyAzEiYFRIekMxyA4XhsljuZu0g5TpbzSZA";

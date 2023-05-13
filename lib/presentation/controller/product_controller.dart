@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../model/model.dart';
@@ -11,6 +13,7 @@ import 'controller.dart';
 
 class ProductController extends GetxController {
   final Database database = Database();
+  final Storage storage = Storage();
   RxBool isLoading = false.obs;
   RxDouble uploadProgress = 0.0.obs;
   var uuid = const Uuid();
@@ -75,6 +78,43 @@ class ProductController extends GetxController {
     } catch (e) {
       debugPrint('Error adding product: $e');
       log('Error adding product: $e');
+    }
+  }
+
+  void pickProductImage() async {
+    bool isAuthorized = await Permission.storage.isGranted;
+    if (!isAuthorized) {
+      var status = await Permission.storage.request();
+      if (status.isDenied) {
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Perizinan Ditolak'),
+            content: const Text(
+                'Anda tidak memberikan izin untuk mengakses galeri foto'),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('tolak'),
+              ),
+              TextButton(
+                onPressed: () => isAuthorized = true,
+                child: const Text('Izinkan'),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
+    }
+    ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      await uploadProductImage(image);
+      var imageUrl = await storage.getProductUrl(image.name);
+      newProduct.update('imageUrl', (_) => imageUrl, ifAbsent: () => imageUrl);
+    }
+    if (image == null) {
+      Fluttertoast.showToast(msg: 'Tidak ada gambar yang dipilih');
     }
   }
 

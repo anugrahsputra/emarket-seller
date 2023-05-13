@@ -69,7 +69,7 @@ class _MapPageState extends State<MapPage> {
     List<LatLng> polylineCoordinates = [];
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      google_api_key,
+      googleApiKey,
       PointLatLng(
         widget.buyer.location.latitude,
         widget.buyer.location.longitude,

@@ -256,7 +256,7 @@ class DetailOrder extends StatelessWidget {
                     child: Text(
                       'Terima Pesanan',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: 15,
                         color: Colors.white,
                       ),
                     ),
@@ -285,7 +285,7 @@ class DetailOrder extends StatelessWidget {
                     child: Text(
                       'Tolak Pesanan',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: 15,
                       ),
                     ),
                   ),
@@ -295,31 +295,6 @@ class DetailOrder extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void showConfirmationDialog(
-      BuildContext context, String message, VoidCallback onPressed) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Konfirmasi'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Batal'),
-            ),
-            TextButton(
-              onPressed: onPressed,
-              child: const Text('Ya'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
