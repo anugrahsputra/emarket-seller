@@ -24,59 +24,61 @@ class OrderPage extends StatelessWidget {
         init: OrderController(),
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
-          return ListView.builder(
-            itemCount: orderController.orders.length,
-            itemBuilder: (context, index) {
-              const defaultBuyer = Buyer();
-              final order = orderController.orders[index];
-              // final cartLength = order.cart.length;
-              // final carts = orderController.orders[index].cart[cartLength - 1];
-              final buyer = buyerController.buyers.firstWhere(
-                (buyer) => buyer.id == order.buyerId,
-                orElse: () => defaultBuyer,
-              );
-              // final cart = Cart(
-              //   name: carts.name,
-              //   price: carts.price,
-              //   productId: carts.productId,
-              //   quantity: carts.quantity,
-              //   sellerId: carts.sellerId,
-              //   imageUrl: carts.imageUrl,
-              //   storeName: carts.storeName,
-              // );
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => DetailOrder(
-                        order: order,
-                        buyer: buyer,
-                      ));
-                },
-                child: Card(
-                  key: ValueKey(order.id), // <--- Key
-                  child: ListTile(
-                    title: Text(
-                      orderController.orders[index].displayName,
-                      style: GoogleFonts.poppins(),
-                    ),
-                    subtitle: Text(
-                      orderController.orders[index].note,
-                      style: GoogleFonts.poppins(),
-                    ),
-                    trailing: Text(
-                      PriceFormatter.format(
-                          orderController.orders[index].total),
-                      style: GoogleFonts.poppins(),
-                    ),
-                    tileColor: order.isCancelled
-                        ? Colors.red[100]
-                        : order.isProcessing
-                            ? Colors.green[100]
-                            : Colors.yellow[100],
-                  ),
-                ),
-              );
-            },
-          );
+          return controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: orderController.orders.length,
+                  itemBuilder: (context, index) {
+                    const defaultBuyer = Buyer();
+                    final order = orderController.orders[index];
+                    // final cartLength = order.cart.length;
+                    // final carts = orderController.orders[index].cart[cartLength - 1];
+                    final buyer = buyerController.buyers.firstWhere(
+                      (buyer) => buyer.id == order.buyerId,
+                      orElse: () => defaultBuyer,
+                    );
+                    // final cart = Cart(
+                    //   name: carts.name,
+                    //   price: carts.price,
+                    //   productId: carts.productId,
+                    //   quantity: carts.quantity,
+                    //   sellerId: carts.sellerId,
+                    //   imageUrl: carts.imageUrl,
+                    //   storeName: carts.storeName,
+                    // );
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => DetailOrder(
+                              order: order,
+                              buyer: buyer,
+                            ));
+                      },
+                      child: Card(
+                        key: ValueKey(order.id), // <--- Key
+                        child: ListTile(
+                          title: Text(
+                            orderController.orders[index].displayName,
+                            style: GoogleFonts.poppins(),
+                          ),
+                          subtitle: Text(
+                            orderController.orders[index].note,
+                            style: GoogleFonts.poppins(),
+                          ),
+                          trailing: Text(
+                            PriceFormatter.format(
+                                orderController.orders[index].total),
+                            style: GoogleFonts.poppins(),
+                          ),
+                          tileColor: order.isCancelled
+                              ? Colors.red[100]
+                              : order.isProcessing
+                                  ? Colors.green[100]
+                                  : Colors.yellow[100],
+                        ),
+                      ),
+                    );
+                  },
+                );
         },
       ),
     );

@@ -21,6 +21,13 @@ class ProfileEditPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Edit Profile'),
+        leading: IconButton(
+          onPressed: () {
+            sellerController.newProfilePicture.value = null;
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_rounded),
+        ),
       ),
       body: Obx(
         () => sellerController.loading.value

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class OrderController extends GetxController {
   final Database database = Database();
+  RxBool isLoading = false.obs;
   final orders = RxList<Orders>([]);
   final carts = RxList<Cart>([]);
   final isProcessing = false.obs;
@@ -14,6 +15,11 @@ class OrderController extends GetxController {
   void onInit() {
     super.onInit();
     getOrders();
+  }
+
+  setLoading(bool value) {
+    isLoading.value = value;
+    update();
   }
 
   getOrders() async {

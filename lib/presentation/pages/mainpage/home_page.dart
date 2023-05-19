@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +90,7 @@ class Homepage extends StatelessWidget {
                           onTap: () {
                             Get.toNamed('/detail-product-page',
                                 arguments: productController.products[index]);
+                            log('detailProduct(${productController.products[index].id}))');
                           },
                         );
                       },
