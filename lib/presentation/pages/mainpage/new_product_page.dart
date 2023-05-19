@@ -2,6 +2,7 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:emarket_seller/services/database.dart';
 import 'package:emarket_seller/services/storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +26,18 @@ class NewProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tambah Produk'),
+        leading: IconButton(
+          onPressed: () async {
+            final imageUrl = productController.newProduct['imageUrl'];
+            if (imageUrl != null) {
+              final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+              await ref.delete();
+            }
+            productController.newProduct.value = {};
+            Get.offAllNamed('/main-page');
+          },
+          icon: const Icon(Icons.arrow_back_rounded),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -235,7 +248,7 @@ class NewProductPage extends StatelessWidget {
                 onPressed: () {
                   productController.addProduct();
 
-                  Get.back();
+                  Get.offAllNamed('/main-page');
                 },
               ),
             ],
