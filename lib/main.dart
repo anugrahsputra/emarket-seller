@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Emarket Seller',
-      initialBinding: AuthBinding(),
+      initialBinding: Binding(),
       theme: ThemeData(
         colorSchemeSeed: const Color(0xff212529),
         appBarTheme: AppBarTheme(
@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: const InputDecorationTheme(
           fillColor: Color(0xffdee2e6),
         ),
-        // scaffoldBackgroundColor: const Color(0xfff8f9fa),
-
+        scaffoldBackgroundColor: const Color(0xfff8f9fa),
         fontFamily: GoogleFonts.poppins().fontFamily,
         textTheme: textTheme,
       ),

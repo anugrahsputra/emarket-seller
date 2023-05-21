@@ -1,5 +1,5 @@
-export 'auth_binding.dart';
 export 'auth_controller.dart';
+export 'binding.dart';
 export 'bottom_navbar_controller.dart';
 export 'buyer_controller.dart';
 export 'location_controller.dart';

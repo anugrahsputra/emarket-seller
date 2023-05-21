@@ -1,7 +1,7 @@
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:get/get.dart';
 
-class AuthBinding extends Bindings {
+class Binding extends Bindings {
   @override
   void dependencies() {
     Get.put<AuthController>(AuthController(), permanent: true);
