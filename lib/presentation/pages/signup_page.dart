@@ -2,6 +2,7 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpPage extends GetWidget<AuthController> {
   final nameController = TextEditingController();
@@ -28,8 +29,16 @@ class SignUpPage extends GetWidget<AuthController> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 140,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    Text(
+                      'Daftar',
+                      style: GoogleFonts.poppins(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     Form(
                       child: Column(

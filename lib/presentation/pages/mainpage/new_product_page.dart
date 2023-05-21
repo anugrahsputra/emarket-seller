@@ -247,7 +247,7 @@ class NewProductPage extends StatelessWidget {
                 title: 'Simpan',
                 onPressed: () {
                   productController.addProduct();
-
+                  productController.newProduct.value = {};
                   Get.offAllNamed('/main-page');
                 },
               ),

@@ -53,26 +53,26 @@ class DetailOrder extends StatelessWidget {
                       fontSize: 25,
                     ),
                   ),
-                  order.isCancelled
-                      ? Text(
-                          'Pesanan ditolak',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                          ),
-                        )
-                      : order.isProcessing
-                          ? Text(
-                              'Sedang Diproses',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                              ),
-                            )
-                          : Text(
-                              'Belum Diproses',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                              ),
-                            ),
+                  // order.isCancelled
+                  //     ? Text(
+                  //         'Pesanan ditolak',
+                  //         style: GoogleFonts.poppins(
+                  //           fontSize: 14,
+                  //         ),
+                  //       )
+                  //     : order.isProcessing
+                  //         ? Text(
+                  //             'Sedang Diproses',
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 14,
+                  //             ),
+                  //           )
+                  //         : Text(
+                  //             'Belum Diproses',
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 14,
+                  //             ),
+                  //           ),
                 ],
               ),
               const SizedBox(
@@ -235,62 +235,70 @@ class DetailOrder extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FilledButton(
-                    onPressed: () async {
-                      orderController.processOrder(order, 'isProcessing',
-                          !orderController.isProcessing.value, order.cart);
-                      Fluttertoast.showToast(
-                        msg: 'Pesanan diterima. Segera antar pesanan!',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.green[100],
-                        textColor: Colors.black,
-                        fontSize: 16.0,
-                      );
-                      Get.back();
-                    },
-                    child: Text(
-                      'Terima Pesanan',
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
+              order.isCancelled || order.isProcessing
+                  ? order.isCancelled
+                      ? const Text('Anda telah membatalkan pesanan ini')
+                      : const Text(
+                          'Anda telah menerima pesanan ini, segera antarkan kepada pembeli')
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FilledButton(
+                          onPressed: () async {
+                            orderController.processOrder(
+                                order,
+                                'isProcessing',
+                                !orderController.isProcessing.value,
+                                order.cart);
+                            Fluttertoast.showToast(
+                              msg: 'Pesanan diterima. Segera antar pesanan!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green[100],
+                              textColor: Colors.black,
+                              fontSize: 16.0,
+                            );
+                            Get.back();
+                          },
+                          child: Text(
+                            'Terima Pesanan',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        FilledButton.tonal(
+                          onPressed: () {
+                            orderController.cancelOrder(
+                              order,
+                              'isCancelled',
+                              !orderController.isCancelled.value,
+                            );
+                            Fluttertoast.showToast(
+                              msg: 'Pesanan ditolak',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red[100],
+                              textColor: Colors.black,
+                              fontSize: 16.0,
+                            );
+                            Get.back();
+                          },
+                          child: Text(
+                            'Tolak Pesanan',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  FilledButton.tonal(
-                    onPressed: () {
-                      orderController.cancelOrder(
-                        order,
-                        'isCancelled',
-                        !orderController.isCancelled.value,
-                      );
-                      Fluttertoast.showToast(
-                        msg: 'Pesanan ditolak',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red[100],
-                        textColor: Colors.black,
-                        fontSize: 16.0,
-                      );
-                      Get.back();
-                    },
-                    child: Text(
-                      'Tolak Pesanan',
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

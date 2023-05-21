@@ -2,6 +2,7 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignInPage extends GetWidget<AuthController> {
   SignInPage({Key? key}) : super(key: key);
@@ -18,9 +19,15 @@ class SignInPage extends GetWidget<AuthController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 200,
+              const SizedBox(height: 100),
+              Text(
+                'Masuk',
+                style: GoogleFonts.poppins(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+              const SizedBox(height: 100),
               TextFormField(
                 cursorColor: const Color(0xff212529),
                 controller: emailController,

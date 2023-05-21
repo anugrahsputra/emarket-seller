@@ -27,6 +27,12 @@ class DetailProductPage extends GetWidget<ProductController> {
     return Scaffold(
       body: GetBuilder<ProductController>(
         init: ProductController(),
+        initState: (_) {
+          nameController.text = product.name;
+          priceController.text = product.price.toString();
+          stockController.text = product.quantity.toString();
+          descriptionController.text = product.description;
+        },
         builder: (productController) {
           return buildContent(productController);
         },
@@ -189,6 +195,7 @@ class DetailProductPage extends GetWidget<ProductController> {
                                             product.id,
                                             int.parse(priceController.text));
                                         Get.back();
+                                        productController.update();
                                       },
                                       child: const Text('Save'),
                                     ),

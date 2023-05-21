@@ -107,7 +107,8 @@ class ProductController extends GetxController {
       }
     }
     ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery, maxHeight: 800, maxWidth: 800);
     if (image != null) {
       await uploadProductImage(image);
       var imageUrl = await storage.getProductUrl(image.name);

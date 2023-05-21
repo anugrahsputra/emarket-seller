@@ -110,7 +110,7 @@ class AuthController extends GetxController {
       Get.find<SellerController>().update();
       Get.find<ProductController>().update();
       Get.offNamedUntil('/main-page', (route) => false);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       log(e.toString());
       Get.snackbar(
         "Error signing in",

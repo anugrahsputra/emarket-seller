@@ -99,7 +99,7 @@ class Database {
           .map((snapshot) =>
               snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList());
     } catch (e) {
-      log(e.toString());
+      log('Error fetching product: $e');
       return const Stream.empty();
     }
   }
