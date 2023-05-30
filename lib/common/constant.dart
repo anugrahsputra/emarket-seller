@@ -39,5 +39,3 @@ TextTheme textTheme = TextTheme(
     color: const Color(0xff212529),
   ),
 );
-
-const String googleApiKey = "AIzaSyAzEiYFRIekMxyA4XhsljuZu0g5TpbzSZA";

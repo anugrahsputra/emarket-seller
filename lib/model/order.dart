@@ -11,6 +11,7 @@ class Orders extends Equatable {
   final bool isProcessing;
   final bool isDelivered;
   final bool isCancelled;
+  final bool isShipping;
   final List<Cart> cart;
   final int total;
   final String date;
@@ -23,6 +24,7 @@ class Orders extends Equatable {
     required this.isProcessing,
     required this.isDelivered,
     required this.isCancelled,
+    required this.isShipping,
     required this.cart,
     required this.total,
     required this.date,
@@ -37,6 +39,7 @@ class Orders extends Equatable {
     bool? isProcessing,
     bool? isDelivered,
     bool? isCancelled,
+    bool? isShipping,
     List<Cart>? cart,
     int? total,
     String? date,
@@ -50,6 +53,7 @@ class Orders extends Equatable {
       isProcessing: isProcessing ?? this.isProcessing,
       isCancelled: isCancelled ?? this.isCancelled,
       isDelivered: isDelivered ?? this.isDelivered,
+      isShipping: isShipping ?? this.isShipping,
       cart: cart ?? this.cart,
       total: total ?? this.total,
       date: date ?? this.date,
@@ -66,6 +70,7 @@ class Orders extends Equatable {
       'isProcessing': isProcessing,
       'isDelivered': isDelivered,
       'isCancelled': isCancelled,
+      'isShipping': isShipping,
       'cart': cart.map((x) => x.toMap()).toList(),
       'total': total,
       'date': date,
@@ -83,6 +88,7 @@ class Orders extends Equatable {
       isProcessing: map['isProcessing'] ?? false,
       isDelivered: map['isDelivered'] ?? false,
       isCancelled: map['isCancelled'] ?? false,
+      isShipping: map['isShipping'] ?? false,
       cart: List<Cart>.from(map['cart']?.map((x) => Cart.fromMap(x))),
       total: map['total']?.toInt() ?? 0,
       date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
@@ -98,6 +104,7 @@ class Orders extends Equatable {
       isProcessing,
       isDelivered,
       isCancelled,
+      isShipping,
       cart,
       total,
       date,

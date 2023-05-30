@@ -47,7 +47,7 @@ class AccountEditPage extends StatelessWidget {
                                 Get.back();
                               },
                               child: const Text('Konfirmasi'),
-                            )),
+                            ),),
                     ],
                   ),
                 );

@@ -6,6 +6,7 @@ import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
@@ -36,16 +37,17 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     markers.add(
       Marker(
-          markerId: const MarkerId('buyerLoc'),
-          position: LatLng(
-            widget.buyer.location.latitude,
-            widget.buyer.location.longitude,
-          ),
-          infoWindow: InfoWindow(
-            title: widget.buyer.displayName,
-            snippet: widget.buyer.address,
-          ),
-          icon: BitmapDescriptor.defaultMarker),
+        markerId: const MarkerId('buyerLoc'),
+        position: LatLng(
+          widget.buyer.location.latitude,
+          widget.buyer.location.longitude,
+        ),
+        infoWindow: InfoWindow(
+          title: widget.buyer.displayName,
+          snippet: widget.buyer.address,
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ),
     );
     markers.add(
       Marker(
@@ -111,20 +113,100 @@ class _MapPageState extends State<MapPage> {
       ),
       body: GetBuilder<SellerController>(
         builder: (controller) {
-          return GoogleMap(
-            mapType: MapType.normal,
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(
-                widget.buyer.location.latitude,
-                widget.buyer.location.longitude,
+          return Stack(
+            children: [
+              GoogleMap(
+                zoomControlsEnabled: false,
+                mapToolbarEnabled: false,
+                mapType: MapType.normal,
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                    widget.buyer.location.latitude,
+                    widget.buyer.location.longitude,
+                  ),
+                  zoom: 15.3,
+                ),
+                markers: markers,
+                polylines: Set<Polyline>.of(polylines.values),
               ),
-              zoom: 16,
-            ),
-            markers: markers,
-            polylines: Set<Polyline>.of(polylines.values),
+              buildBuyerInfo(context),
+            ],
           );
         },
+      ),
+    );
+  }
+
+  buildBuyerInfo(BuildContext context) {
+    return Align(
+      alignment: AlignmentDirectional.bottomCenter,
+      child: Container(
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 24,
+          right: 24,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 15,
+        ),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(3, 3),
+              spreadRadius: -1,
+              blurRadius: 7,
+              color: Color.fromRGBO(98, 97, 97, 0.5),
+            )
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Text(
+            //   'Informasi Pembeli',
+            //   style: GoogleFonts.poppins(fontSize: 20),
+            // ),
+            // const SizedBox(height: 12),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(widget.buyer.photoUrl),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.buyer.displayName,
+                      style: GoogleFonts.poppins(fontSize: 20),
+                    ),
+                    Text(widget.buyer.phoneNumber),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.lightGreen,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.phone_outlined,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

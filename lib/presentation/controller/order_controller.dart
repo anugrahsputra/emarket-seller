@@ -10,6 +10,7 @@ class OrderController extends GetxController {
   final carts = RxList<Cart>([]);
   final isProcessing = false.obs;
   final isCancelled = false.obs;
+  final isShipping = false.obs;
 
   @override
   void onInit() {
@@ -22,13 +23,13 @@ class OrderController extends GetxController {
     update();
   }
 
-  getOrders() async {
+ Future<void> getOrders() async {
     String sellerId = Get.find<AuthController>().user!.uid;
     orders.bindStream(database.getOrders(sellerId));
     update();
   }
 
-  processOrder(
+  Future<void> processOrder(
       Orders order, String field, bool value, List<Cart> cartList) async {
     String sellerId = Get.find<AuthController>().user!.uid;
     final productController = Get.find<ProductController>();
@@ -49,7 +50,7 @@ class OrderController extends GetxController {
     update();
   }
 
-  cancelOrder(Orders order, String field, bool value) async {
+  Future<void> cancelOrder(Orders order, String field, bool value) async {
     await database.updateOrderStatus(order.id, order.buyerId, field, value);
     isCancelled.value = value;
     update();

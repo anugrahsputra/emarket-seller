@@ -236,8 +236,8 @@ class DetailOrder extends StatelessWidget {
                 height: 20,
               ),
               order.isCancelled || order.isProcessing
-                  ? order.isCancelled
-                      ? const Text('Anda telah membatalkan pesanan ini')
+                  ? order.isShipping
+                      ? const Text('Anda telah mengantarkan pesanan ini')
                       : const Text(
                           'Anda telah menerima pesanan ini, segera antarkan kepada pembeli')
                   : Row(
