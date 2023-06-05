@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
@@ -23,14 +25,24 @@ class OrderController extends GetxController {
     update();
   }
 
- Future<void> getOrders() async {
+  Future<void> getOrders() async {
     String sellerId = Get.find<AuthController>().user!.uid;
-    orders.bindStream(database.getOrders(sellerId));
-    update();
+    try {
+      orders.bindStream(database.getOrders(sellerId));
+      update();
+    } on Exception catch (e) {
+      log('Error getting orders: $e');
+    } finally {
+      setLoading(false);
+    }
   }
 
   Future<void> processOrder(
-      Orders order, String field, bool value, List<Cart> cartList) async {
+    Orders order,
+    String field,
+    bool value,
+    List<Cart> cartList,
+  ) async {
     String sellerId = Get.find<AuthController>().user!.uid;
     final productController = Get.find<ProductController>();
 

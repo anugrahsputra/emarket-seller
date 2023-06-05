@@ -76,8 +76,8 @@ class SignInPage extends GetWidget<AuthController> {
                 height: 15,
               ),
               ButtonWidget(
-                onPressed: () {
-                  controller.signIn(
+                onPressed: () async {
+                  await controller.signIn(
                     email: emailController.text,
                     password: passwordController.text,
                   );

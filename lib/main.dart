@@ -57,9 +57,9 @@ class Root extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return GetX<AuthController>(
-      initState: (_) async {
-        Get.put<SellerController>(SellerController());
-      },
+      // initState: (_) async {
+      //   Get.put<SellerController>(SellerController());
+      // },
       builder: (_) {
         return Loading(
           loading: controller.loading,

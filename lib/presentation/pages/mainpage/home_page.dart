@@ -20,8 +20,8 @@ class Homepage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              controller.signOut();
+            onPressed: () async {
+              await controller.signOut();
             },
           )
         ],
@@ -69,6 +69,9 @@ class Homepage extends StatelessWidget {
             ),
             Expanded(
               child: GetX<ProductController>(
+                initState: (_) async {
+                  await productController.fetchProduct();
+                },
                 builder: (productController) {
                   if (productController.products.isEmpty) {
                     return const Center(

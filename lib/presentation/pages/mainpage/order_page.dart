@@ -22,6 +22,9 @@ class OrderPage extends StatelessWidget {
       ),
       body: GetX<OrderController>(
         init: OrderController(),
+        initState: (_) async {
+          await orderController.getOrders();
+        },
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
           return controller.isLoading.value
@@ -31,21 +34,10 @@ class OrderPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     const defaultBuyer = Buyer();
                     final order = orderController.orders[index];
-                    // final cartLength = order.cart.length;
-                    // final carts = orderController.orders[index].cart[cartLength - 1];
                     final buyer = buyerController.buyers.firstWhere(
                       (buyer) => buyer.id == order.buyerId,
                       orElse: () => defaultBuyer,
                     );
-                    // final cart = Cart(
-                    //   name: carts.name,
-                    //   price: carts.price,
-                    //   productId: carts.productId,
-                    //   quantity: carts.quantity,
-                    //   sellerId: carts.sellerId,
-                    //   imageUrl: carts.imageUrl,
-                    //   storeName: carts.storeName,
-                    // );
                     return GestureDetector(
                       onTap: () {
                         Get.to(() => DetailOrder(
@@ -54,7 +46,7 @@ class OrderPage extends StatelessWidget {
                             ));
                       },
                       child: Card(
-                        key: ValueKey(order.id), // <--- Key
+                        key: ValueKey(order.id),
                         child: ListTile(
                           title: Text(
                             orderController.orders[index].displayName,

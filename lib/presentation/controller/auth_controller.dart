@@ -109,7 +109,8 @@ class AuthController extends GetxController {
           (await _database.getSeller(credential.user!.uid))!;
       Get.find<SellerController>().update();
       Get.find<ProductController>().update();
-      Get.offNamedUntil('/main-page', (route) => false);
+      Get.toNamed('/');
+      update();
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       Get.snackbar(
@@ -129,16 +130,19 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     try {
+      loading.value = true;
       await _auth.signOut();
-      Get.find<SellerController>().clear();
       _database.terminate();
-      Get.offNamedUntil('/signin', (route) => false);
+      Get.offAllNamed('/');
+      update();
     } catch (e) {
       Get.snackbar(
         "Error signing out",
         e.toString(),
         snackPosition: SnackPosition.BOTTOM,
       );
+    } finally {
+      loading.value = false;
     }
   }
 

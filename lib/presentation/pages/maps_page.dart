@@ -115,26 +115,30 @@ class _MapPageState extends State<MapPage> {
         builder: (controller) {
           return Stack(
             children: [
-              GoogleMap(
-                zoomControlsEnabled: false,
-                mapToolbarEnabled: false,
-                mapType: MapType.normal,
-                onMapCreated: _onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                    widget.buyer.location.latitude,
-                    widget.buyer.location.longitude,
-                  ),
-                  zoom: 15.3,
-                ),
-                markers: markers,
-                polylines: Set<Polyline>.of(polylines.values),
-              ),
+              buildMap(),
               buildBuyerInfo(context),
             ],
           );
         },
       ),
+    );
+  }
+
+  buildMap() {
+    return GoogleMap(
+      zoomControlsEnabled: false,
+      mapToolbarEnabled: false,
+      mapType: MapType.normal,
+      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(
+          widget.buyer.location.latitude,
+          widget.buyer.location.longitude,
+        ),
+        zoom: 15.3,
+      ),
+      markers: markers,
+      polylines: Set<Polyline>.of(polylines.values),
     );
   }
 
@@ -168,11 +172,6 @@ class _MapPageState extends State<MapPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Text(
-            //   'Informasi Pembeli',
-            //   style: GoogleFonts.poppins(fontSize: 20),
-            // ),
-            // const SizedBox(height: 12),
             Row(
               children: [
                 CircleAvatar(

@@ -47,9 +47,9 @@ class ProductController extends GetxController {
     try {
       setLoading(true);
       products.bindStream(database.getProduct(id));
-      for (var product in products) {
-        products.add(product);
-      }
+      // for (var product in products) {
+      //   products.add(product);
+      // }
       update();
     } catch (e) {
       debugPrint('Error fetching product: $e');
