@@ -27,8 +27,8 @@ class OrderPage extends StatelessWidget {
         },
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
-          return controller.isLoading.value
-              ? const Center(child: CircularProgressIndicator())
+          return controller.orders.isEmpty
+              ? const Center(child: Text('Belum ada pesanan'),)
               : ListView.builder(
                   itemCount: orderController.orders.length,
                   itemBuilder: (context, index) {

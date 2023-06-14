@@ -16,7 +16,7 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Halaman Utama'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

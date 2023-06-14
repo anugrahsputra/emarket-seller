@@ -38,7 +38,7 @@ class Database {
   Future<bool?> updateSellerInfo(
       String sellerId, Map<String, dynamic> data) async {
     if (_auth.currentUser == null) {
-      return null; // Return null if user is not authenticated
+      return null; 
     }
     try {
       await _firestore.collection('sellers').doc(sellerId).update(data);
@@ -59,7 +59,10 @@ class Database {
           .doc(id)
           .collection('products')
           .doc(product.id)
-          .set(product.toMap());
+          .set({
+              ...product.toMap(),
+              'query': product.name.toLowerCase(),
+            });
       return true;
     } catch (e) {
       log(e.toString());

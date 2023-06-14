@@ -1,7 +1,5 @@
-import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
-import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,9 +23,16 @@ class DetailProductPage extends GetWidget<ProductController> {
       });
     });
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Edit Produk',
+          style: GoogleFonts.plusJakartaSans(),
+        ),
+      ),
       body: GetBuilder<ProductController>(
         init: ProductController(),
         initState: (_) {
+          controller.fetchProduct();
           nameController.text = product.name;
           priceController.text = product.price.toString();
           stockController.text = product.quantity.toString();
@@ -60,189 +65,55 @@ class DetailProductPage extends GetWidget<ProductController> {
     );
   }
 
-  buildContent(ProductController productController) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          expandedHeight: 300,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(95),
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: 20,
-                bottom: 10,
-              ),
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: ColorScheme.fromSeed(seedColor: const Color(0xff212529))
-                    .background,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            product.name,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                            ),
-                            onPressed: () {
-                              Get.dialog(
-                                AlertDialog(
-                                  title: const Text('Edit Product'),
-                                  content: Form(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextFormField(
-                                          controller: nameController,
-                                          decoration: const InputDecoration(
-                                            labelText: 'Name',
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        productController.updateName(
-                                            product.id, nameController.text);
-                                        Get.back();
-                                      },
-                                      child: const Text('Save'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            PriceFormatter.format(product.price),
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                            ),
-                            onPressed: () {
-                              Get.dialog(
-                                AlertDialog(
-                                  title: const Text('Edit Product'),
-                                  content: Form(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextFormField(
-                                          controller: priceController,
-                                          decoration: const InputDecoration(
-                                            labelText: 'Price',
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        productController.updatePrice(
-                                            product.id,
-                                            int.parse(priceController.text));
-                                        Get.back();
-                                        productController.update();
-                                      },
-                                      child: const Text('Save'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+  buildContent(ProductController controller) {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  'Description',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(product.imageUrl),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ExpandedText(
-                  text: product.description,
-                ),
-                const SizedBox(
-                  height: 15,
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Ditambahkan Pada: 06-06-2069'),
+                    Text('Sisa Stok PRoduk: ${product.quantity}')
+                  ],
                 ),
               ],
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Text(
+                  product.name,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 10,)
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:emarket_seller/presentation/controller/controller.dart';
-import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,24 +8,18 @@ class MainPage extends StatelessWidget {
 
   final BottomNavbarController controller = Get.put(BottomNavbarController());
 
-  final List<Widget> pageList = [
-    Homepage(),
-    OrderPage(),
-    ProfilePage(),
-  ];
-
   final List<NavigationDestination> navigationDestinations = [
     const NavigationDestination(
       icon: Icon(Icons.home),
-      label: 'Home',
+      label: 'Halaman Utama',
     ),
     const NavigationDestination(
       icon: Icon(Icons.shopping_cart),
-      label: 'Orders',
+      label: 'Pesanan',
     ),
     const NavigationDestination(
       icon: Icon(Icons.person),
-      label: 'Profile',
+      label: 'Akun',
     ),
   ];
 

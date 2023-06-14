@@ -4,6 +4,7 @@ import 'package:emarket_seller/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -47,9 +48,9 @@ class ProductController extends GetxController {
     try {
       setLoading(true);
       products.bindStream(database.getProduct(id));
-      // for (var product in products) {
-      //   products.add(product);
-      // }
+      for (var product in products) {
+        products.add(product);
+      }
       update();
     } catch (e) {
       debugPrint('Error fetching product: $e');
@@ -110,9 +111,26 @@ class ProductController extends GetxController {
     final XFile? image = await picker.pickImage(
         source: ImageSource.gallery, maxHeight: 800, maxWidth: 800);
     if (image != null) {
-      await uploadProductImage(image);
-      var imageUrl = await storage.getProductUrl(image.name);
-      newProduct.update('imageUrl', (_) => imageUrl, ifAbsent: () => imageUrl);
+      final croppedImage = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Gambar',
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+          )
+        ],
+      );
+      if (croppedImage != null) {
+        final XFile image = XFile(croppedImage.path);
+        await uploadProductImage(image);
+        var imageUrl = await storage.getProductUrl(image.name);
+        newProduct.update('imageUrl', (_) => imageUrl,
+            ifAbsent: () => imageUrl);
+      }
     }
     if (image == null) {
       Fluttertoast.showToast(msg: 'Tidak ada gambar yang dipilih');

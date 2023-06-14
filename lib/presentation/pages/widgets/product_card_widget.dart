@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
@@ -95,6 +98,13 @@ class ProductCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: () async {
+                final imageUrl = product.imageUrl;
+                final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+                log(imageUrl);
+                debugPrint(imageUrl);
+                await ref.delete();
+                debugPrint('product image deleted: $imageUrl');
+                productController.newProduct.value = {};
                 productController.deleteProduct(product);
               },
               icon: const Icon(

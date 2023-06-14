@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +17,33 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate();
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug, 
+  );
+
+  FirebaseMessaging notification = FirebaseMessaging.instance;
+  NotificationSettings settings = await notification.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+    provisional: false,
+  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    log("got message in the foreground");
+    log("message data: ${message.data}");
+
+    if (message.notification != null) {
+      log("message also contained a notification: ${message.notification}");
+    }
+  });
+  log("User granted permission: ${settings.authorizationStatus}");
+  
+  await notification.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  await notification.subscribeToTopic("newCheckout");
 
   runApp(const MyApp());
 }
@@ -22,7 +51,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -57,9 +85,7 @@ class Root extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return GetX<AuthController>(
-      // initState: (_) async {
-      //   Get.put<SellerController>(SellerController());
-      // },
+      init: AuthController(),
       builder: (_) {
         return Loading(
           loading: controller.loading,
