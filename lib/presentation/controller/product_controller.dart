@@ -16,13 +16,15 @@ class ProductController extends GetxController {
   final Database database = Database();
   final Storage storage = Storage();
   RxBool isLoading = false.obs;
+  RxBool isEdit = false.obs;
   RxDouble uploadProgress = 0.0.obs;
   var uuid = const Uuid();
-  final _product = Product().obs;
+  final Rx<Product> _product = Product().obs;
 
   Product get product => _product.value;
   set product(Product value) {
     _product.value = value;
+    ever(_product, (_) => debugPrint('Product has been changed'));
     update();
   }
 
@@ -51,6 +53,21 @@ class ProductController extends GetxController {
       for (var product in products) {
         products.add(product);
       }
+      update();
+    } catch (e) {
+      debugPrint('Error fetching product: $e');
+      log('Error fetching product: $e');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  void getProduct(String produkid) async {
+    String id = Get.find<AuthController>().user!.uid;
+    try {
+      setLoading(true);
+      final product = (await database.product(id, produkid))!;
+      this.product = product;
       update();
     } catch (e) {
       debugPrint('Error fetching product: $e');
@@ -119,8 +136,8 @@ class ProductController extends GetxController {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Crop Gambar',
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
           )
         ],
       );
@@ -153,56 +170,35 @@ class ProductController extends GetxController {
     }
   }
 
-  void updateName(String productId, String value) async {
+  void updateProduct(String productId, Map<String, dynamic> data) async {
     String id = Get.find<AuthController>().user!.uid;
     try {
-      await database.updateProduct(id, productId, 'name', value);
-      product.name = value;
-      debugPrint('Product name updated: $_product.value.name');
+      await database.updateProduct(id, productId, data);
       update();
     } catch (e) {
       debugPrint('Error updating product: $e');
     }
   }
 
-  void updatePrice(String productId, int value) async {
-    String id = Get.find<AuthController>().user!.uid;
-    try {
-      await database.updateProduct(id, productId, 'price', value);
-      debugPrint('Product updated: $productId');
-      update();
-    } catch (e) {
-      debugPrint('Error updating product: $e');
-    }
-  }
-
-  void updateQuantity(String productId, int value) async {
-    String id = Get.find<AuthController>().user!.uid;
-    try {
-      await database.updateProduct(id, productId, 'quantity', value);
-      debugPrint('Product updated: $productId');
-      update();
-    } catch (e) {
-      debugPrint('Error updating product: $e');
-    }
-  }
-
-  void decreaseQuantity(String productId, int value) async {
-    String id = Get.find<AuthController>().user!.uid;
-    try {
-      await database.updateProduct(id, productId, 'quantity', value);
-      debugPrint('Product updated: $productId');
-      update();
-    } catch (e) {
-      debugPrint('Error updating product: $e');
-    }
-  }
+  // void decreaseQuantity(String productId, int value) async {
+  //   String id = Get.find<AuthController>().user!.uid;
+  //   try {
+  //     await database.updateProduct(id, productId, 'quantity', value);
+  //     debugPrint('Product updated: $productId');
+  //     update();
+  //   } catch (e) {
+  //     debugPrint('Error updating product: $e');
+  //   }
+  // }
 
   reduceQuantity(String productId) async {
     String id = Get.find<AuthController>().user!.uid;
     try {
       final quantity = _product.value.quantity--;
-      await database.updateProduct(id, productId, 'quantity', quantity);
+      Map<String, dynamic> data = {
+        'quantity': quantity,
+      };
+      await database.updateProduct(id, productId, data);
       debugPrint('Product updated: $productId');
       update();
     } catch (e) {

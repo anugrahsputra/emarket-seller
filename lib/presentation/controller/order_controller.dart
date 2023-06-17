@@ -52,10 +52,12 @@ class OrderController extends GetxController {
         orElse: () => Product(),
       );
       final newQuantity = product.quantity - cart.quantity;
+      Map<String, dynamic> data = {
+        'quantity': newQuantity,
+      };
 
       await database.updateOrderStatus(order.id, order.buyerId, field, value);
-      await database.updateProduct(
-          sellerId, cart.productId, 'quantity', newQuantity);
+      await database.updateProduct(sellerId, cart.productId, data);
     }
 
     isProcessing.value = value;

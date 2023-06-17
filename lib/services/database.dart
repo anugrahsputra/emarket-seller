@@ -38,7 +38,7 @@ class Database {
   Future<bool?> updateSellerInfo(
       String sellerId, Map<String, dynamic> data) async {
     if (_auth.currentUser == null) {
-      return null; 
+      return null;
     }
     try {
       await _firestore.collection('sellers').doc(sellerId).update(data);
@@ -60,9 +60,9 @@ class Database {
           .collection('products')
           .doc(product.id)
           .set({
-              ...product.toMap(),
-              'query': product.name.toLowerCase(),
-            });
+        ...product.toMap(),
+        'query': product.name.toLowerCase(),
+      });
       return true;
     } catch (e) {
       log(e.toString());
@@ -70,7 +70,7 @@ class Database {
     }
   }
 
-  Future<Product?> product(String id, Product product) async {
+  Future<Product?> product(String id, String productId) async {
     if (_auth.currentUser == null) {
       return null;
     }
@@ -79,18 +79,17 @@ class Database {
           .collection('sellers')
           .doc(id)
           .collection('products')
-          .doc(product.id)
+          .doc(productId)
           .get();
       return Product.fromSnapshot(doc);
     } catch (e) {
-      log(e.toString());
+      log("database: $e");
       return Product();
     }
   }
 
   Stream<List<Product>> getProduct(String id) {
     if (_auth.currentUser == null) {
-      // Return an empty stream if user is not authenticated
       return const Stream.empty();
     }
     try {
@@ -110,11 +109,10 @@ class Database {
   Future<bool?> updateProduct(
     String sellerId,
     String productId,
-    String field,
-    dynamic newValue,
+    Map<String, dynamic> data,
   ) async {
     if (_auth.currentUser == null) {
-      return null; // Return null if user is not authenticated
+      return null;
     }
     try {
       await _firestore
@@ -122,7 +120,7 @@ class Database {
           .doc(sellerId)
           .collection('products')
           .doc(productId)
-          .update({field: newValue});
+          .update(data);
       return true;
     } catch (e) {
       log(e.toString());

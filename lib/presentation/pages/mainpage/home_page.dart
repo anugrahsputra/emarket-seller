@@ -69,9 +69,6 @@ class Homepage extends StatelessWidget {
             ),
             Expanded(
               child: GetX<ProductController>(
-                initState: (_) async {
-                  await productController.fetchProduct();
-                },
                 builder: (productController) {
                   if (productController.products.isEmpty) {
                     return const Center(
@@ -93,7 +90,7 @@ class Homepage extends StatelessWidget {
                           onTap: () {
                             Get.toNamed('/detail-product-page',
                                 arguments: productController.products[index]);
-                            log('detailProduct(${productController.products[index].id}))');
+                            log('detailProduct(${productController.products[index].id})');
                           },
                         );
                       },

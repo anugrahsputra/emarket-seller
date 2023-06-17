@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 class NewProductPage extends StatelessWidget {
   NewProductPage({Key? key}) : super(key: key);
 
-  final ProductController productController = Get.put(ProductController());
+  final ProductController productController = Get.find<ProductController>();
   final AuthController controller = Get.find<AuthController>();
   final Storage storage = Storage();
   final Database database = Database();
