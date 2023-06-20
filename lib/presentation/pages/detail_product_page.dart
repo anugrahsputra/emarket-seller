@@ -53,19 +53,16 @@ class DetailProductPage extends GetWidget<ProductController> {
             'Edit Produk',
             style: GoogleFonts.plusJakartaSans(),
           ),
-          leading: controller.isEdit.isTrue
-              ? IconButton(
-                  onPressed: () {
-                    controller.isEdit.toggle();
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                )
-              : IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                ),
+          leading: IconButton(
+            onPressed: () {
+              if (controller.isEdit.isTrue) {
+                controller.isEdit.toggle();
+              } else {
+                Get.back();
+              }
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -201,7 +198,7 @@ class DetailProductPage extends GetWidget<ProductController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                        'Ditambahkan Pada: 06-06-2069'), //change the date with variable from Product model
+                        'Ditambahkan Pada: 06-06-2069'), //!NOTE: change the date with variable from Product model
                     Text('Sisa Stok Produk: ${product.quantity}')
                   ],
                 ),

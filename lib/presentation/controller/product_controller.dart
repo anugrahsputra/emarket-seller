@@ -124,33 +124,36 @@ class ProductController extends GetxController {
         return;
       }
     }
+
     ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(
-        source: ImageSource.gallery, maxHeight: 800, maxWidth: 800);
-    if (image != null) {
-      final croppedImage = await ImageCropper().cropImage(
-        sourcePath: image.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-        ],
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Gambar',
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-          )
-        ],
-      );
-      if (croppedImage != null) {
-        final XFile image = XFile(croppedImage.path);
-        await uploadProductImage(image);
-        var imageUrl = await storage.getProductUrl(image.name);
-        newProduct.update('imageUrl', (_) => imageUrl,
-            ifAbsent: () => imageUrl);
-      }
-    }
+      source: ImageSource.gallery,
+      maxHeight: 800,
+      maxWidth: 800,
+    );
+
     if (image == null) {
       Fluttertoast.showToast(msg: 'Tidak ada gambar yang dipilih');
+      return;
+    }
+
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatioPresets: [CropAspectRatioPreset.square],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Gambar',
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+        ),
+      ],
+    );
+
+    if (croppedImage != null) {
+      final XFile croppedFile = XFile(croppedImage.path);
+      await uploadProductImage(croppedFile);
+      var imageUrl = await storage.getProductUrl(croppedFile.name);
+      newProduct.update('imageUrl', (_) => imageUrl, ifAbsent: () => imageUrl);
     }
   }
 
