@@ -21,55 +21,56 @@ class OrderPage extends StatelessWidget {
         title: Text('Pesanan', style: GoogleFonts.poppins()),
       ),
       body: GetX<OrderController>(
-        init: OrderController(),
-        initState: (_) async {
-          await orderController.getOrders();
-        },
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
           return controller.orders.isEmpty
-              ? const Center(child: Text('Belum ada pesanan'),)
-              : ListView.builder(
-                  itemCount: orderController.orders.length,
-                  itemBuilder: (context, index) {
-                    const defaultBuyer = Buyer();
-                    final order = orderController.orders[index];
-                    final buyer = buyerController.buyers.firstWhere(
-                      (buyer) => buyer.id == order.buyerId,
-                      orElse: () => defaultBuyer,
-                    );
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(() => DetailOrder(
-                              order: order,
-                              buyer: buyer,
-                            ));
-                      },
-                      child: Card(
-                        key: ValueKey(order.id),
-                        child: ListTile(
-                          title: Text(
-                            orderController.orders[index].displayName,
-                            style: GoogleFonts.poppins(),
+              ? const Center(
+                  child: Text('Belum ada pesanan'),
+                )
+              : RefreshIndicator(
+                  onRefresh: controller.pullToRefresh,
+                  child: ListView.builder(
+                    itemCount: orderController.orders.length,
+                    itemBuilder: (context, index) {
+                      const defaultBuyer = Buyer();
+                      final order = orderController.orders[index];
+                      final buyer = buyerController.buyers.firstWhere(
+                        (buyer) => buyer.id == order.buyerId,
+                        orElse: () => defaultBuyer,
+                      );
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => DetailOrder(
+                                order: order,
+                                buyer: buyer,
+                              ));
+                        },
+                        child: Card(
+                          key: ValueKey(order.id),
+                          child: ListTile(
+                            title: Text(
+                              orderController.orders[index].displayName,
+                              style: GoogleFonts.poppins(),
+                            ),
+                            subtitle: Text(
+                              orderController.orders[index].note,
+                              style: GoogleFonts.poppins(),
+                            ),
+                            trailing: Text(
+                              PriceFormatter.format(
+                                  orderController.orders[index].total),
+                              style: GoogleFonts.poppins(),
+                            ),
+                            tileColor: order.isCancelled
+                                ? Colors.red[100]
+                                : order.isProcessing
+                                    ? Colors.green[100]
+                                    : Colors.yellow[100],
                           ),
-                          subtitle: Text(
-                            orderController.orders[index].note,
-                            style: GoogleFonts.poppins(),
-                          ),
-                          trailing: Text(
-                            PriceFormatter.format(
-                                orderController.orders[index].total),
-                            style: GoogleFonts.poppins(),
-                          ),
-                          tileColor: order.isCancelled
-                              ? Colors.red[100]
-                              : order.isProcessing
-                                  ? Colors.green[100]
-                                  : Colors.yellow[100],
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
         },
       ),

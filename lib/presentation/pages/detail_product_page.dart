@@ -2,6 +2,7 @@ import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -133,7 +134,7 @@ class DetailProductPage extends GetWidget<ProductController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 15),
+            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 15.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -147,8 +148,8 @@ class DetailProductPage extends GetWidget<ProductController> {
                             child: Stack(
                               children: [
                                 Container(
-                                  width: 120,
-                                  height: 120,
+                                  width: 120.w,
+                                  height: 120.h,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image:
@@ -166,8 +167,8 @@ class DetailProductPage extends GetWidget<ProductController> {
                                   top: -10,
                                   right: -10,
                                   child: Container(
-                                    width: 30,
-                                    height: 30,
+                                    width: 30.w,
+                                    height: 30.h,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(15),
@@ -181,8 +182,8 @@ class DetailProductPage extends GetWidget<ProductController> {
                               ],
                             ))
                         : Container(
-                            width: 120,
-                            height: 120,
+                            width: 120.w,
+                            height: 120.h,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(product.imageUrl),
@@ -193,7 +194,7 @@ class DetailProductPage extends GetWidget<ProductController> {
                           );
                   },
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -206,7 +207,7 @@ class DetailProductPage extends GetWidget<ProductController> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -233,8 +234,8 @@ class DetailProductPage extends GetWidget<ProductController> {
                           ),
                         ),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10.h,
                 ),
                 Obx(
                   () => controller.isEdit.isTrue
@@ -257,7 +258,7 @@ class DetailProductPage extends GetWidget<ProductController> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10.w),
                             Expanded(
                               child: TextField(
                                 controller: stockController,
@@ -284,7 +285,7 @@ class DetailProductPage extends GetWidget<ProductController> {
                           ),
                         ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Obx(
                   () => controller.isEdit.isTrue
                       ? TextField(

@@ -97,9 +97,9 @@ class _MapPageState extends State<MapPage> {
     PolylineId id = const PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: Colors.deepPurpleAccent,
+      color: const Color.fromARGB(255, 78, 111, 255),
       points: polylineCoordinates,
-      width: 8,
+      width: 5,
     );
     polylines[id] = polyline;
     setState(() {});
@@ -135,7 +135,7 @@ class _MapPageState extends State<MapPage> {
           widget.buyer.location.latitude,
           widget.buyer.location.longitude,
         ),
-        zoom: 15.3,
+        zoom: 14.8,
       ),
       markers: markers,
       polylines: Set<Polyline>.of(polylines.values),

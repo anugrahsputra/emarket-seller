@@ -50,9 +50,6 @@ class ProductController extends GetxController {
     try {
       setLoading(true);
       products.bindStream(database.getProduct(id));
-      for (var product in products) {
-        products.add(product);
-      }
       update();
     } catch (e) {
       debugPrint('Error fetching product: $e');
@@ -60,6 +57,11 @@ class ProductController extends GetxController {
     } finally {
       setLoading(false);
     }
+  }
+
+  Future<void> pullToRefresh() async {
+    await Future.delayed(const Duration(seconds: 2));
+    await fetchProduct();
   }
 
   void getProduct(String produkid) async {

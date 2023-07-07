@@ -27,6 +27,7 @@ class OrderController extends GetxController {
 
   Future<void> getOrders() async {
     String sellerId = Get.find<AuthController>().user!.uid;
+    setLoading(true);
     try {
       orders.bindStream(database.getOrders(sellerId));
       update();
@@ -35,6 +36,11 @@ class OrderController extends GetxController {
     } finally {
       setLoading(false);
     }
+  }
+
+  Future<void> pullToRefresh() async {
+    await Future.delayed(const Duration(seconds: 2));
+    await getOrders();
   }
 
   Future<void> processOrder(

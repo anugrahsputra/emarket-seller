@@ -10,9 +10,9 @@ import 'package:get/get.dart';
 import 'controller.dart';
 
 class AuthController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Rxn<User> _firebaseUser = Rxn<User>();
-  final Database _database = Database();
+  late final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final Rxn<User> _firebaseUser = Rxn<User>();
+  late final Database _database = Database();
   final loading = false.obs;
 
   User? get user => _firebaseUser.value;
@@ -31,8 +31,8 @@ class AuthController extends GetxController {
     required String password,
     required String phoneNumber,
   }) async {
+    loading.value = true;
     try {
-      loading.value = true;
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
@@ -45,7 +45,8 @@ class AuthController extends GetxController {
       );
 
       final address = await Get.find<LocationController>()
-          .getAddressFromLatLng(position.latitude, position.longitude);
+          .getAddressFromLatLng(position.latitude, position.longitude)
+          .then((value) => value);
       final seller = SellerModel(
         id: credential.user!.uid,
         displayName: displayName,
@@ -62,7 +63,7 @@ class AuthController extends GetxController {
         Get.find<LocationController>().update();
         Get.offNamedUntil('/main-page', (route) => false);
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       log(e.toString());
       Get.snackbar(
         "Error creating Account",
@@ -81,8 +82,8 @@ class AuthController extends GetxController {
 
   Future<void> updatePassword(
       {required String currentPassword, required String newPassword}) async {
+    loading.value = true;
     try {
-      loading.value = true;
       final credential = EmailAuthProvider.credential(
         email: user!.email!,
         password: currentPassword,
@@ -101,8 +102,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> signIn({required String email, required String password}) async {
+    loading.value = true;
     try {
-      loading.value = true;
       final credential = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       Get.find<SellerController>().seller =
@@ -129,8 +130,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> signOut() async {
+    loading.value = true;
     try {
-      loading.value = true;
       await _auth.signOut();
       _database.terminate();
       Get.offAllNamed('/');
