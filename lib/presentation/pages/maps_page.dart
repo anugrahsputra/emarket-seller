@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
+import 'package:emarket_seller/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,10 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final buyerController = Get.find<BuyerController>();
   final locationController = Get.find<LocationController>();
-  final sellerController = Get.find<SellerController>();
+  final SellerController sellerController = Get.put(SellerController());
+  final AuthController authController = Get.find<AuthController>();
+  final Database database = Database();
+
   late GoogleMapController mapController;
   PolylinePoints polylinePoints = PolylinePoints();
 
@@ -112,6 +116,11 @@ class _MapPageState extends State<MapPage> {
         title: const Text('Maps'),
       ),
       body: GetBuilder<SellerController>(
+        initState: (_) async {
+          sellerController.seller = (await database.getSeller(
+            authController.user!.uid,
+          ))!;
+        },
         builder: (controller) {
           return Stack(
             children: [

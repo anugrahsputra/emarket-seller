@@ -7,20 +7,19 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrderPage extends StatelessWidget {
-  OrderPage({Key? key}) : super(key: key);
-
-  final ProductController productController = Get.put(ProductController());
+  const OrderPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final OrderController orderController = Get.put(OrderController());
-    final BuyerController buyerController = Get.put(BuyerController());
+    final BuyerController buyerController = Get.find<BuyerController>();
+    // final ProductController productController = Get.find<ProductController>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesanan', style: GoogleFonts.poppins()),
       ),
       body: GetX<OrderController>(
+        init: Get.find<OrderController>(),
         builder: (controller) {
           debugPrint('Orders length: ${controller.orders.length}');
           return controller.orders.isEmpty
@@ -30,10 +29,10 @@ class OrderPage extends StatelessWidget {
               : RefreshIndicator(
                   onRefresh: controller.pullToRefresh,
                   child: ListView.builder(
-                    itemCount: orderController.orders.length,
+                    itemCount: controller.orders.length,
                     itemBuilder: (context, index) {
                       const defaultBuyer = Buyer();
-                      final order = orderController.orders[index];
+                      final order = controller.orders[index];
                       final buyer = buyerController.buyers.firstWhere(
                         (buyer) => buyer.id == order.buyerId,
                         orElse: () => defaultBuyer,
@@ -49,16 +48,16 @@ class OrderPage extends StatelessWidget {
                           key: ValueKey(order.id),
                           child: ListTile(
                             title: Text(
-                              orderController.orders[index].displayName,
+                              controller.orders[index].displayName,
                               style: GoogleFonts.poppins(),
                             ),
                             subtitle: Text(
-                              orderController.orders[index].note,
+                              controller.orders[index].note,
                               style: GoogleFonts.poppins(),
                             ),
                             trailing: Text(
                               PriceFormatter.format(
-                                  orderController.orders[index].total),
+                                  controller.orders[index].total),
                               style: GoogleFonts.poppins(),
                             ),
                             tileColor: order.isCancelled

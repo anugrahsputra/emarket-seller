@@ -13,6 +13,7 @@ class AuthController extends GetxController {
   late final FirebaseAuth _auth = FirebaseAuth.instance;
   late final Rxn<User> _firebaseUser = Rxn<User>();
   late final Database _database = Database();
+  final TokenController token = Get.put(TokenController());
   final loading = false.obs;
 
   User? get user => _firebaseUser.value;

@@ -18,6 +18,8 @@ class ProductController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isEdit = false.obs;
   RxDouble uploadProgress = 0.0.obs;
+  RxDouble rating = 0.0.obs;
+  RxInt numRatings = 0.obs;
   var uuid = const Uuid();
   final Rx<Product> _product = Product().obs;
 
@@ -38,13 +40,11 @@ class ProductController extends GetxController {
 
   var newProduct = {}.obs;
 
-  // Loading state
   void setLoading(bool value) {
     isLoading.value = value;
     update();
   }
 
-  // To fetch product
   Future<void> fetchProduct() async {
     String id = Get.find<AuthController>().user!.uid;
     try {
@@ -79,7 +79,6 @@ class ProductController extends GetxController {
     }
   }
 
-  // To add a new product
   void addProduct() async {
     String id = Get.find<AuthController>().user!.uid;
     try {
@@ -92,6 +91,8 @@ class ProductController extends GetxController {
         quantity: newProduct["quantity"],
         description: newProduct["description"],
         imageUrl: newProduct["imageUrl"],
+        numRatings: numRatings.value,
+        rating: rating.value,
       );
       await database.addProduct(product, id);
       update();
@@ -184,17 +185,6 @@ class ProductController extends GetxController {
       debugPrint('Error updating product: $e');
     }
   }
-
-  // void decreaseQuantity(String productId, int value) async {
-  //   String id = Get.find<AuthController>().user!.uid;
-  //   try {
-  //     await database.updateProduct(id, productId, 'quantity', value);
-  //     debugPrint('Product updated: $productId');
-  //     update();
-  //   } catch (e) {
-  //     debugPrint('Error updating product: $e');
-  //   }
-  // }
 
   reduceQuantity(String productId) async {
     String id = Get.find<AuthController>().user!.uid;

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailOrder extends StatelessWidget {
-  DetailOrder({
+  const DetailOrder({
     Key? key,
     required this.order,
     required this.buyer,
@@ -17,8 +17,6 @@ class DetailOrder extends StatelessWidget {
 
   final Orders order;
   final Buyer buyer;
-  final ProductController productController = Get.put(ProductController());
-  final OrderController orderController = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
@@ -223,6 +221,7 @@ class DetailOrder extends StatelessWidget {
   }
 
   buildOrderStatus() {
+    final orderController = Get.find<OrderController>();
     return order.isCancelled
         ? Text(
             'Pesanan ditolak',

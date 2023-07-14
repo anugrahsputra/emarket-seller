@@ -6,3 +6,4 @@ export 'location_controller.dart';
 export 'order_controller.dart';
 export 'product_controller.dart';
 export 'seller_controller.dart';
+export 'token_controller.dart';

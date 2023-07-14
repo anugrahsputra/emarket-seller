@@ -4,6 +4,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +15,7 @@ import 'presentation/controller/controller.dart';
 import 'presentation/presentation.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,7 +45,8 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-  await notification.subscribeToTopic("newCheckout");
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   runApp(const MyApp());
 }
@@ -61,9 +63,9 @@ class MyApp extends StatelessWidget {
         title: 'Emarket Seller',
         initialBinding: Binding(),
         theme: ThemeData(
-          colorSchemeSeed: const Color(0xff212529),
+          colorSchemeSeed: const Color(0xff2b2b2b),
           appBarTheme: AppBarTheme(
-            iconTheme: const IconThemeData(color: Color(0xff212529)),
+            iconTheme: const IconThemeData(color: Color(0xff2b2b2b)),
             titleTextStyle: GoogleFonts.poppins(
               color: const Color(0xff212529),
               fontSize: 20,
@@ -84,8 +86,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Root extends GetWidget<AuthController> {
+class Root extends StatefulWidget {
   const Root({super.key});
+
+  @override
+  State<Root> createState() => _RootState();
+}
+
+class _RootState extends State<Root> {
+  @override
+  void initState() {
+    initialization();
+    super.initState();
+  }
+
+  void initialization() async {
+    FlutterNativeSplash.remove();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +110,8 @@ class Root extends GetWidget<AuthController> {
       init: AuthController(),
       builder: (_) {
         return Loading(
-          loading: controller.loading,
-          child: controller.user?.uid != null ? MainPage() : SignInPage(),
+          loading: _.loading,
+          child: _.user?.uid != null ? MainPage() : SignInPage(),
         );
       },
     );

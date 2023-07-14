@@ -188,7 +188,7 @@ class Database {
     }
     try {
       return _firestore.collection('buyers').snapshots().map((snapshot) =>
-          snapshot.docs.map((doc) => Buyer.fromSnapshot(doc)).toList());
+          snapshot.docs.map((doc) => Buyer.fromDocument(doc)).toList());
     } catch (e) {
       log(e.toString());
       return const Stream.empty();

@@ -16,7 +16,7 @@ class BottomNavbarController extends GetxController {
         update();
         break;
       case 1:
-        currentPage = OrderPage();
+        currentPage = const OrderPage();
         update();
         break;
       case 2:
