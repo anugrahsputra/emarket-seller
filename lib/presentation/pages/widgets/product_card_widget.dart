@@ -28,7 +28,9 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: const Color(0xffdee2e6),
+      color: product.quantity == 0
+          ? const Color.fromARGB(255, 230, 200, 199)
+          : const Color(0xffdee2e6),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(

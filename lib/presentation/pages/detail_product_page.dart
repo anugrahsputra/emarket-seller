@@ -2,6 +2,7 @@ import 'package:emarket_seller/common/common.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -49,63 +50,64 @@ class DetailProductPage extends GetWidget<ProductController> {
       });
     });
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Edit Produk',
-            style: GoogleFonts.plusJakartaSans(),
-          ),
-          leading: IconButton(
+      appBar: AppBar(
+        title: Text(
+          'Edit Produk',
+          style: GoogleFonts.plusJakartaSans(),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            if (controller.isEdit.isTrue) {
+              controller.isEdit.toggle();
+            } else {
+              Get.back();
+            }
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        actions: [
+          TextButton(
             onPressed: () {
-              if (controller.isEdit.isTrue) {
-                controller.isEdit.toggle();
-              } else {
+              controller.isEdit.toggle();
+              if (controller.isEdit.isFalse) {
+                final data = getUpdatedData();
+                controller.updateProduct(product.id, data);
+                controller.getProduct(product.id);
+                controller.update();
                 Get.back();
+                Fluttertoast.showToast(
+                  msg: 'Produk berhasil diupdate',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
               }
             },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                controller.isEdit.toggle();
-                if (controller.isEdit.isFalse) {
-                  final data = getUpdatedData();
-                  controller.updateProduct(product.id, data);
-                  controller.getProduct(product.id);
-                  controller.update();
-                  Get.back();
-                  Fluttertoast.showToast(
-                    msg: 'Produk berhasil diupdate',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                }
+            child: Obx(
+              () {
+                return Text(
+                  controller.isEdit.isTrue ? 'Simpan' : 'Edit',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
               },
-              child: Obx(
-                () {
-                  return Text(
-                    controller.isEdit.isTrue ? 'Simpan' : 'Edit',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
-                },
-              ),
             ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: GetBuilder<ProductController>(
-            builder: (_) {
-              return controller.isLoading.isTrue
-                  ? const Center(child: CircularProgressIndicator())
-                  : buildContent(controller);
-            },
           ),
-        ));
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: GetBuilder<ProductController>(
+          builder: (_) {
+            return controller.isLoading.isTrue
+                ? const Center(child: CircularProgressIndicator())
+                : buildContent(controller);
+          },
+        ),
+      ),
+    );
   }
 
   showAlertDialog(BuildContext context, String productName) {
@@ -200,7 +202,20 @@ class DetailProductPage extends GetWidget<ProductController> {
                   children: [
                     const Text(
                         'Ditambahkan Pada: 06-06-2069'), //!NOTE: change the date with variable from Product model
-                    Text('Sisa Stok Produk: ${product.quantity}')
+                    Text('Sisa Stok Produk: ${product.quantity}'),
+                    Row(children: [
+                      RatingBarIndicator(
+                        rating: product.rating,
+                        itemBuilder: (context, index) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                        itemSize: 20.0,
+                        direction: Axis.horizontal,
+                      ),
+                      Text('(${product.numRatings})')
+                    ]),
                   ],
                 ),
               ],

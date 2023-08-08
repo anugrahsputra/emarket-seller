@@ -11,10 +11,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key, required this.buyer}) : super(key: key);
+  const MapPage({
+    Key? key,
+    required this.order,
+    required this.buyer,
+  }) : super(key: key);
 
   @override
   State<MapPage> createState() => _MapPageState();
+  final Orders order;
   final Buyer buyer;
 }
 
@@ -43,12 +48,12 @@ class _MapPageState extends State<MapPage> {
       Marker(
         markerId: const MarkerId('buyerLoc'),
         position: LatLng(
-          widget.buyer.location.latitude,
-          widget.buyer.location.longitude,
+          widget.order.location.latitude,
+          widget.order.location.longitude,
         ),
         infoWindow: InfoWindow(
-          title: widget.buyer.displayName,
-          snippet: widget.buyer.address,
+          title: widget.order.displayName,
+          snippet: widget.order.address,
         ),
         icon: BitmapDescriptor.defaultMarker,
       ),
@@ -141,8 +146,8 @@ class _MapPageState extends State<MapPage> {
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: LatLng(
-          widget.buyer.location.latitude,
-          widget.buyer.location.longitude,
+          widget.order.location.latitude,
+          widget.order.location.longitude,
         ),
         zoom: 14.8,
       ),
@@ -192,7 +197,7 @@ class _MapPageState extends State<MapPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.buyer.displayName,
+                      widget.order.displayName,
                       style: GoogleFonts.poppins(fontSize: 20),
                     ),
                     Text(widget.buyer.phoneNumber),

@@ -13,8 +13,11 @@ class Orders extends Equatable {
   final bool isCancelled;
   final bool isShipping;
   final List<Cart> cart;
+  final String address;
+  final LocationModel location;
   final int total;
   final String date;
+  final Timestamp timestamp;
   final String note;
   const Orders({
     this.id = '',
@@ -26,8 +29,11 @@ class Orders extends Equatable {
     required this.isCancelled,
     required this.isShipping,
     required this.cart,
+    required this.address,
+    required this.location,
     required this.total,
     required this.date,
+    required this.timestamp,
     required this.note,
   });
 
@@ -41,8 +47,11 @@ class Orders extends Equatable {
     bool? isCancelled,
     bool? isShipping,
     List<Cart>? cart,
+    String? address,
+    LocationModel? location,
     int? total,
     String? date,
+    Timestamp? timestamp,
     String? note,
   }) {
     return Orders(
@@ -55,8 +64,11 @@ class Orders extends Equatable {
       isDelivered: isDelivered ?? this.isDelivered,
       isShipping: isShipping ?? this.isShipping,
       cart: cart ?? this.cart,
+      address: address ?? this.address,
+      location: location ?? this.location,
       total: total ?? this.total,
       date: date ?? this.date,
+      timestamp: timestamp ?? this.timestamp,
       note: note ?? this.note,
     );
   }
@@ -72,8 +84,11 @@ class Orders extends Equatable {
       'isCancelled': isCancelled,
       'isShipping': isShipping,
       'cart': cart.map((x) => x.toMap()).toList(),
+      'address': address,
+      'location': location.toMap(),
       'total': total,
       'date': date,
+      'timestamp': timestamp,
       'note': note,
     };
   }
@@ -90,8 +105,11 @@ class Orders extends Equatable {
       isCancelled: map['isCancelled'] ?? false,
       isShipping: map['isShipping'] ?? false,
       cart: List<Cart>.from(map['cart']?.map((x) => Cart.fromMap(x))),
+      address: map['address'] ?? '',
+      location: LocationModel.fromMap(map['location']),
       total: map['total']?.toInt() ?? 0,
       date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+      timestamp: Timestamp.now(),
     );
   }
 
@@ -106,8 +124,11 @@ class Orders extends Equatable {
       isCancelled,
       isShipping,
       cart,
+      address,
+      location,
       total,
       date,
+      timestamp,
       note,
     ];
   }

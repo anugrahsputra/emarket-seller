@@ -13,6 +13,7 @@ class OrderController extends GetxController {
   final isProcessing = false.obs;
   final isCancelled = false.obs;
   final isShipping = false.obs;
+  RxBool sortByDate = false.obs;
 
   @override
   void onInit() {
@@ -43,6 +44,17 @@ class OrderController extends GetxController {
     await getOrders();
   }
 
+  Future<void> shipsOrder(Orders order, bool value) async {
+    await database.updateOrderStatus(
+      order.id,
+      order.buyerId,
+      'isShipping',
+      value,
+    );
+    isShipping.value = value;
+    update();
+  }
+
   Future<void> processOrder(
     Orders order,
     String field,
@@ -70,8 +82,9 @@ class OrderController extends GetxController {
     update();
   }
 
-  Future<void> cancelOrder(Orders order, String field, bool value) async {
-    await database.updateOrderStatus(order.id, order.buyerId, field, value);
+  Future<void> cancelOrder(Orders order, bool value) async {
+    await database.updateOrderStatus(
+        order.id, order.buyerId, 'isCancelled', value);
     isCancelled.value = value;
     update();
   }
