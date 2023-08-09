@@ -164,6 +164,17 @@ class Database {
     }
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getDailySales(
+    String sellerId,
+    DateTime start,
+    DateTime end,
+  ) async {
+    return _firestore
+        .collectionGroup('checkout')
+        .where('sellerId', isEqualTo: sellerId)
+        .get();
+  }
+
   Future<void> updateOrderStatus(
     String orderId,
     String buyerId,

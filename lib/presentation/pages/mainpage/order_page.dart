@@ -13,43 +13,45 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final BuyerController buyerController = Get.find<BuyerController>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pesanan', style: GoogleFonts.poppins()),
-        actions: [
-          Obx(
-            () => IconButton(
-              onPressed: () {
-                Get.find<OrderController>().sortByDate.toggle();
-                Get.find<OrderController>().getOrders();
-              },
-              icon: Icon(
-                Get.find<OrderController>().sortByDate.value
-                    ? Icons.arrow_upward
-                    : Icons.arrow_downward,
-                color: Colors.white,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Get.find<OrderController>().pullToRefresh();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Pesanan', style: GoogleFonts.poppins()),
+          actions: [
+            Obx(
+              () => IconButton(
+                onPressed: () {
+                  Get.find<OrderController>().sortByDate.toggle();
+                  Get.find<OrderController>().getOrders();
+                  Get.find<OrderController>().getDailySales();
+                },
+                icon: Icon(
+                  Get.find<OrderController>().sortByDate.value
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: GetX<OrderController>(
-        init: Get.find<OrderController>(),
-        builder: (controller) {
-          debugPrint('Orders length: ${controller.orders.length}');
-          if (controller.orders.isEmpty) {
-            return const Center(
-              child: Text('Belum ada pesanan'),
-            );
-          } else {
-            if (controller.sortByDate.value) {
-              controller.orders.sort((a, b) => b.date.compareTo(a.date));
+          ],
+        ),
+        body: GetX<OrderController>(
+          init: Get.find<OrderController>(),
+          builder: (controller) {
+            debugPrint('Orders length: ${controller.orders.length}');
+            if (controller.orders.isEmpty) {
+              return const Center(
+                child: Text('Belum ada pesanan'),
+              );
             } else {
-              controller.orders.sort((a, b) => a.date.compareTo(b.date));
-            }
-            return RefreshIndicator(
-              onRefresh: controller.pullToRefresh,
-              child: ListView.builder(
+              if (controller.sortByDate.value) {
+                controller.orders.sort((a, b) => b.date.compareTo(a.date));
+              } else {
+                controller.orders.sort((a, b) => a.date.compareTo(b.date));
+              }
+              return ListView.builder(
                 itemCount: controller.orders.length,
                 itemBuilder: (context, index) {
                   const defaultBuyer = Buyer();
@@ -89,10 +91,10 @@ class OrderPage extends StatelessWidget {
                     ),
                   );
                 },
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }

@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/services/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OrderController extends GetxController {
   final Database database = Database();
@@ -14,11 +16,13 @@ class OrderController extends GetxController {
   final isCancelled = false.obs;
   final isShipping = false.obs;
   RxBool sortByDate = false.obs;
+  RxInt totalSales = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
     getOrders();
+    getDailySales();
   }
 
   setLoading(bool value) {
@@ -36,6 +40,48 @@ class OrderController extends GetxController {
       log('Error getting orders: $e');
     } finally {
       setLoading(false);
+    }
+  }
+
+  Future<void> getDailySales() async {
+    String sellerId = Get.find<AuthController>().user!.uid;
+    final DateTime now = DateTime.now();
+    final DateTime start = DateTime(now.year, now.month, now.day);
+    final DateTime end = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+    setLoading(true);
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await database.getDailySales(sellerId, start, end);
+
+      Map<String, int> dailySales = {};
+      List<QueryDocumentSnapshot> documents = snapshot.docs.where((doc) {
+        DateTime docDate = DateFormat('MMMM d, y H:mm').parse(doc['date']);
+        return docDate.isAfter(start) &&
+            docDate.isBefore(end) &&
+            doc['isDelivered'] == true;
+      }).toList();
+      if (documents.isEmpty) {
+        dailySales[DateFormat('yyyy-MM-dd').format(now)] = 0;
+      } else {
+        for (var doc in documents) {
+          DateTime docDate = DateFormat('MMMM d, y H:mm').parse(doc['date']);
+          String dateString = DateFormat('yyyy-MM-dd').format(docDate);
+          int total = doc['total'];
+
+          dailySales.update(dateString, (value) => value + total,
+              ifAbsent: () => total);
+        }
+      }
+
+      dailySales.forEach((date, total) {
+        totalSales.value = total;
+        log('Date: $date - Total Sales: $totalSales');
+      });
+    } catch (e) {
+      log('Error getting daily sales: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
