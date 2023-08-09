@@ -46,6 +46,7 @@ class SellerController extends GetxController {
       loading.value = true;
       final User user = FirebaseAuth.instance.currentUser!;
       seller = (await database.getSeller(user.uid))!;
+      Get.find<OrderController>().getDailySales();
       update();
     } catch (e) {
       log(e.toString());

@@ -17,6 +17,8 @@ class OrderController extends GetxController {
   final isShipping = false.obs;
   RxBool sortByDate = false.obs;
   RxInt totalSales = 0.obs;
+  RxInt totalItemsSold = 0.obs;
+  RxInt averageSales = 0.obs;
 
   @override
   void onInit() {
@@ -43,7 +45,7 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<void> getDailySales() async {
+  Future<Map<String, int>> getDailySales() async {
     String sellerId = Get.find<AuthController>().user!.uid;
     final DateTime now = DateTime.now();
     final DateTime start = DateTime(now.year, now.month, now.day);
@@ -77,11 +79,71 @@ class OrderController extends GetxController {
       dailySales.forEach((date, total) {
         totalSales.value = total;
         log('Date: $date - Total Sales: $totalSales');
+        update();
       });
+      return dailySales;
     } catch (e) {
       log('Error getting daily sales: $e');
     } finally {
       isLoading.value = false;
+    }
+    return {};
+  }
+
+  Future<void> dailySalesSummary() async {
+    try {
+      Map<String, int> dailySales = await getDailySales();
+      int totalSale = 0;
+      int totalItemSold = 0;
+      Map<String, int> productSales = {};
+      dailySales.forEach((date, total) {
+        totalSale += total;
+
+        List<Orders> ordersForDate = orders.where((order) {
+          DateTime orderDate = DateFormat('dd-MM-yyyy').parse(order.date);
+          DateTime formattedDate = DateFormat('yyyy-MM-dd').parse(date);
+          return orderDate.isAtSameMomentAs(formattedDate) &&
+              order.isDelivered == true;
+        }).toList();
+
+        for (var order in ordersForDate) {
+          int itemSold = order.cart.length;
+          totalItemSold += itemSold;
+
+          for (var product in order.cart) {
+            if (productSales.containsKey(product.name)) {
+              productSales.update(
+                  product.name, (value) => value + product.quantity,
+                  ifAbsent: () => product.quantity);
+            } else {
+              productSales[product.name] = product.quantity;
+            }
+          }
+        }
+      });
+
+      double averageSale = totalSale / dailySales.length;
+      List<MapEntry<String, int>> sortedProducts = productSales.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
+
+      List<String> topSellingProducts = sortedProducts
+          .sublist(
+            0,
+            sortedProducts.length < 5 ? sortedProducts.length : 5,
+          )
+          .map((entry) => entry.key)
+          .toList();
+
+      totalSales.value = totalSale;
+      totalItemsSold.value = totalItemSold;
+      averageSales.value = averageSale.toInt();
+      log('Total Sales: $totalSales');
+      log('Total Items Sold: $totalItemsSold');
+      log('Average Sale Amount: $averageSales');
+      log('Top Selling Products: $topSellingProducts');
+      update();
+    } catch (e) {
+      log('Error getting daily sales summary: $e');
     }
   }
 

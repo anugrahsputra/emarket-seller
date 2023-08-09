@@ -26,7 +26,6 @@ class OrderPage extends StatelessWidget {
                 onPressed: () {
                   Get.find<OrderController>().sortByDate.toggle();
                   Get.find<OrderController>().getOrders();
-                  Get.find<OrderController>().getDailySales();
                 },
                 icon: Icon(
                   Get.find<OrderController>().sortByDate.value
@@ -68,7 +67,7 @@ class OrderPage extends StatelessWidget {
                           ));
                     },
                     child: Card(
-                      key: ValueKey(order.id),
+                      key: ValueKey(order.date),
                       child: ListTile(
                         title: Text(
                           controller.orders[index].displayName,

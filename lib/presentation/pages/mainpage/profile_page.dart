@@ -10,12 +10,12 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
 
   final SellerController controller = Get.put(SellerController());
-  final OrderController orderController = Get.put(OrderController());
   final AuthController authController = Get.find<AuthController>();
   final Database database = Database();
 
   @override
   Widget build(BuildContext context) {
+    final OrderController orderController = Get.put(OrderController());
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -36,32 +36,34 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   buildProfileCard(),
                   Container(
-                    margin: EdgeInsets.only(top: 15.h),
+                    margin: EdgeInsets.only(top: 10.h),
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       color: const Color(0xff212529),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
                       children: [
-                        Text(
-                          'Total Penjualan\nHari Ini',
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xfff8f9fa),
+                        dailySalesRow(
+                          title: 'Penjualan Hari Ini',
+                          text: PriceFormatter.format(
+                            orderController.totalSales.value,
                           ),
                         ),
-                        Obx(() => Text(
-                              PriceFormatter.format(
-                                  orderController.totalSales.toInt()),
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xfff8f9fa),
-                              ),
-                            )),
+                        dailySalesRow(
+                          title: 'Item Terjual',
+                          text: '${orderController.totalItemsSold.value} item',
+                        ),
+                        const Divider(
+                          height: 0,
+                          thickness: 1,
+                        ),
+                        dailySalesRow(
+                          title: 'Total Penjualan',
+                          text: PriceFormatter.format(
+                            orderController.averageSales.value,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -150,6 +152,30 @@ class ProfilePage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  dailySalesRow({required String title, required String text}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xfff8f9fa),
+          ),
+        ),
+        Text(
+          text,
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xfff8f9fa),
+          ),
+        ),
+      ],
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class BottomNavbarController extends GetxController {
         break;
       case 2:
         currentPage = ProfilePage();
+        Get.find<OrderController>().dailySalesSummary();
         update();
         break;
       default:
