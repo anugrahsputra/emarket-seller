@@ -43,25 +43,25 @@ class ProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        dailySalesRow(
-                          title: 'Penjualan Hari Ini',
-                          text: PriceFormatter.format(
-                            orderController.totalSales.value,
-                          ),
+                        Text('Penjualan Harian',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            )),
+                        const Divider(
+                          color: Colors.white,
                         ),
                         dailySalesRow(
                           title: 'Item Terjual',
                           text: '${orderController.totalItemsSold.value} item',
                         ),
-                        const Divider(
-                          height: 0,
-                          thickness: 1,
-                        ),
                         dailySalesRow(
                           title: 'Total Penjualan',
                           text: PriceFormatter.format(
-                            orderController.averageSales.value,
+                            orderController.totalSales.value,
                           ),
                         ),
                       ],

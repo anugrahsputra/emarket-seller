@@ -22,7 +22,7 @@ class BottomNavbarController extends GetxController {
         break;
       case 2:
         currentPage = ProfilePage();
-        Get.find<OrderController>().dailySalesSummary();
+        Get.find<OrderController>().getDailySales();
         update();
         break;
       default:

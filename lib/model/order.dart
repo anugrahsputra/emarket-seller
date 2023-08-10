@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emarket_seller/model/model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 class Orders extends Equatable {
   final String id;
@@ -108,7 +107,7 @@ class Orders extends Equatable {
       address: map['address'] ?? '',
       location: LocationModel.fromMap(map['location']),
       total: map['total']?.toInt() ?? 0,
-      date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+      date: map['date'],
       timestamp: Timestamp.now(),
     );
   }

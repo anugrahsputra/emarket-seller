@@ -12,13 +12,14 @@ class OrderController extends GetxController {
   RxBool isLoading = false.obs;
   final orders = RxList<Orders>([]);
   final carts = RxList<Cart>([]);
-  final isProcessing = false.obs;
-  final isCancelled = false.obs;
-  final isShipping = false.obs;
+  RxBool isProcessing = false.obs;
+  RxBool isCancelled = false.obs;
+  RxBool isShipping = false.obs;
   RxBool sortByDate = false.obs;
   RxInt totalSales = 0.obs;
   RxInt totalItemsSold = 0.obs;
   RxInt averageSales = 0.obs;
+  RxBool showCompleteOrders = false.obs;
 
   @override
   void onInit() {
@@ -45,11 +46,14 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<Map<String, int>> getDailySales() async {
+  Future<void> getDailySales() async {
     String sellerId = Get.find<AuthController>().user!.uid;
     final DateTime now = DateTime.now();
     final DateTime start = DateTime(now.year, now.month, now.day);
     final DateTime end = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    int totalSale = 0;
+
+    Map<String, int> productSales = {};
 
     setLoading(true);
     try {
@@ -62,6 +66,7 @@ class OrderController extends GetxController {
         return docDate.isAfter(start) &&
             docDate.isBefore(end) &&
             doc['isDelivered'] == true;
+        // return doc['isDelivered'] == true;
       }).toList();
       if (documents.isEmpty) {
         dailySales[DateFormat('yyyy-MM-dd').format(now)] = 0;
@@ -77,32 +82,13 @@ class OrderController extends GetxController {
       }
 
       dailySales.forEach((date, total) {
-        totalSales.value = total;
-        log('Date: $date - Total Sales: $totalSales');
-        update();
-      });
-      return dailySales;
-    } catch (e) {
-      log('Error getting daily sales: $e');
-    } finally {
-      isLoading.value = false;
-    }
-    return {};
-  }
-
-  Future<void> dailySalesSummary() async {
-    try {
-      Map<String, int> dailySales = await getDailySales();
-      int totalSale = 0;
-      int totalItemSold = 0;
-      Map<String, int> productSales = {};
-      dailySales.forEach((date, total) {
+        int totalItemSold = 0;
         totalSale += total;
 
         List<Orders> ordersForDate = orders.where((order) {
-          DateTime orderDate = DateFormat('dd-MM-yyyy').parse(order.date);
-          DateTime formattedDate = DateFormat('yyyy-MM-dd').parse(date);
-          return orderDate.isAtSameMomentAs(formattedDate) &&
+          DateTime orderDate = DateFormat('MMMM d, y H:mm').parse(order.date);
+          return orderDate.isAfter(start) &&
+              orderDate.isBefore(end) &&
               order.isDelivered == true;
         }).toList();
 
@@ -112,38 +98,36 @@ class OrderController extends GetxController {
 
           for (var product in order.cart) {
             if (productSales.containsKey(product.name)) {
-              productSales.update(
-                  product.name, (value) => value + product.quantity,
-                  ifAbsent: () => product.quantity);
+              productSales[product.name] =
+                  productSales[product.name]! + product.quantity;
             } else {
               productSales[product.name] = product.quantity;
             }
           }
         }
+        totalItemsSold.value = totalItemSold;
       });
-
       double averageSale = totalSale / dailySales.length;
       List<MapEntry<String, int>> sortedProducts = productSales.entries.toList()
         ..sort((a, b) => b.value.compareTo(a.value));
 
       List<String> topSellingProducts = sortedProducts
-          .sublist(
-            0,
-            sortedProducts.length < 5 ? sortedProducts.length : 5,
-          )
+          .sublist(0, sortedProducts.length > 5 ? 5 : sortedProducts.length)
           .map((entry) => entry.key)
           .toList();
 
       totalSales.value = totalSale;
-      totalItemsSold.value = totalItemSold;
+
       averageSales.value = averageSale.toInt();
-      log('Total Sales: $totalSales');
+      log('Total Sales: $totalSale');
       log('Total Items Sold: $totalItemsSold');
       log('Average Sale Amount: $averageSales');
       log('Top Selling Products: $topSellingProducts');
       update();
     } catch (e) {
-      log('Error getting daily sales summary: $e');
+      log('Error getting daily sales: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
