@@ -14,5 +14,6 @@ export 'pages/widgets/button_widget.dart';
 export 'pages/widgets/expanded_text_widget.dart';
 export 'pages/widgets/form_text_widget.dart';
 export 'pages/widgets/loading_widget.dart';
+export 'pages/widgets/order_card_widget.dart';
 export 'pages/widgets/ordered_product_card_widget.dart';
 export 'pages/widgets/product_card_widget.dart';
