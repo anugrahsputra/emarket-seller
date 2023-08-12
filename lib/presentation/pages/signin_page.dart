@@ -49,7 +49,8 @@ class SignInPage extends GetWidget<AuthController> {
                     // color: const Color(0xff14e3ff),
                     child: AnimatedTextKit(
                       pause: const Duration(milliseconds: 1000),
-                      repeatForever: true,
+                      repeatForever: false,
+                      totalRepeatCount: 3,
                       animatedTexts: [
                         TyperAnimatedText(
                           'Anter Pesanan',
