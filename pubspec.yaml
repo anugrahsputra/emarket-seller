@@ -29,6 +29,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animated_text_kit: ^4.2.2
   cached_network_image: ^3.2.3
   cloud_firestore: ^4.3.1
   cupertino_icons: ^1.0.2
@@ -46,6 +47,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   flutter_rating_bar: ^4.0.1
   flutter_screenutil: ^5.8.4
+  flutter_svg: ^2.0.7
   fluttertoast: ^8.2.1
   geocoding: ^2.1.0
   geolocator: ^9.0.2
@@ -94,6 +96,7 @@ flutter:
     - assets/
     - assets/icons/
     - assets/splash_icon/
+    - assets/logo/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

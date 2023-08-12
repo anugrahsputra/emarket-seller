@@ -1,6 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,12 +31,49 @@ class SignUpPage extends GetWidget<AuthController> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    SizedBox(height: 50.h),
                     Text(
-                      'Daftar',
+                      'Daftar Untuk',
                       style: GoogleFonts.poppins(
-                        fontSize: 30,
+                        fontSize: 40,
                         fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45.h,
+                      child: AnimatedTextKit(
+                        pause: const Duration(milliseconds: 1000),
+                        repeatForever: false,
+                        totalRepeatCount: 3,
+                        animatedTexts: [
+                          TyperAnimatedText(
+                            'Buka Toko',
+                            textStyle: GoogleFonts.poppins(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff67AD53),
+                            ),
+                            speed: const Duration(milliseconds: 100),
+                          ),
+                          TyperAnimatedText(
+                            'Akun Baru',
+                            textStyle: GoogleFonts.poppins(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff294159),
+                            ),
+                            speed: const Duration(milliseconds: 100),
+                          ),
+                          TyperAnimatedText(
+                            'Mulai Jualan',
+                            textStyle: GoogleFonts.poppins(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff14e3ff),
+                            ),
+                            speed: const Duration(milliseconds: 100),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(

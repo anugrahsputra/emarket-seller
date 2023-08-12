@@ -1,6 +1,9 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:emarket_seller/presentation/controller/controller.dart';
 import 'package:emarket_seller/presentation/presentation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,19 +18,72 @@ class SignInPage extends GetWidget<AuthController> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 100),
-              Text(
-                'Masuk',
-                style: GoogleFonts.poppins(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
-                ),
+              SizedBox(height: 50.h),
+              SvgPicture.asset(
+                'assets/logo/logo.svg',
               ),
-              const SizedBox(height: 100),
+              SizedBox(height: 20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Masuk ',
+                    style: GoogleFonts.poppins(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'Untuk ',
+                    style: GoogleFonts.poppins(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 155.w,
+                    // color: const Color(0xff14e3ff),
+                    child: AnimatedTextKit(
+                      pause: const Duration(milliseconds: 1000),
+                      repeatForever: true,
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          'Anter Pesanan',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff67AD53),
+                          ),
+                          speed: const Duration(milliseconds: 100),
+                        ),
+                        TyperAnimatedText(
+                          'Jualan',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff294159),
+                          ),
+                          speed: const Duration(milliseconds: 100),
+                        ),
+                        TyperAnimatedText(
+                          'Melanjutkan',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff14e3ff),
+                          ),
+                          speed: const Duration(milliseconds: 100),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 70.h),
               TextFormField(
                 cursorColor: const Color(0xff212529),
                 controller: emailController,
@@ -39,7 +95,7 @@ class SignInPage extends GetWidget<AuthController> {
                     color: Color(0xff495057),
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(25.r),
                     borderSide: const BorderSide(
                       style: BorderStyle.none,
                       width: 0,
@@ -48,8 +104,8 @@ class SignInPage extends GetWidget<AuthController> {
                   filled: true,
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: 15.h,
               ),
               TextFormField(
                 cursorColor: const Color(0xff212529),
@@ -72,8 +128,8 @@ class SignInPage extends GetWidget<AuthController> {
                   filled: true,
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: 15.h,
               ),
               ButtonWidget(
                 onPressed: () async {
