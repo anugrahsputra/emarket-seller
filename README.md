@@ -54,14 +54,17 @@ You can see the packages used in this project in the file [pubspec.yaml](pubspec
 
 ## Screenshots
 
-![Login](https://github.com/anugrahsputra/emarket-seller/assets/71306482/5c8735ba-b3bb-423a-a533-309add9f95d4)
-![Register](https://github.com/anugrahsputra/emarket-seller/assets/71306482/a01b3fcc-8bce-4174-8043-0fcf66917950)
-![add_product](https://github.com/anugrahsputra/emarket-seller/assets/71306482/acb6799e-ac39-41bd-bb39-8bb20573dc9b)
-![edit](https://github.com/anugrahsputra/emarket-seller/assets/71306482/b151f611-ea2c-4f79-8d5e-c0f9e93a7f5c)
-![profile](https://github.com/anugrahsputra/emarket-seller/assets/71306482/83175c81-7488-412f-be72-61bc64b839ee)
-![order_unfinished](https://github.com/anugrahsputra/emarket-seller/assets/71306482/53b9d21f-94b7-4998-ab0f-b57b9788df24)
-![orderfinished](https://github.com/anugrahsputra/emarket-seller/assets/71306482/12cfe063-3222-470c-9339-ef33df8d96fa)
-![homepage](https://github.com/anugrahsputra/emarket-seller/assets/71306482/d4ba6730-531d-4a55-a86a-e06e5089a912)
+
+<p>
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/5c8735ba-b3bb-423a-a533-309add9f95d4" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/a01b3fcc-8bce-4174-8043-0fcf66917950" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/d4ba6730-531d-4a55-a86a-e06e5089a912" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/acb6799e-ac39-41bd-bb39-8bb20573dc9b" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b151f611-ea2c-4f79-8d5e-c0f9e93a7f5c" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/53b9d21f-94b7-4998-ab0f-b57b9788df24" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/12cfe063-3222-470c-9339-ef33df8d96fa" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/83175c81-7488-412f-be72-61bc64b839ee" width=200 alt="login">
+</p>
 
 ## Installation and Usage
 
