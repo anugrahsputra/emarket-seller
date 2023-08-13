@@ -55,6 +55,7 @@ Through this targeted approach, the E-Market Seller application strives to contr
 You can see the packages used in this project in the file [pubspec.yaml](pubspec.yaml).
 
 ## Screenshots
+<img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/8e440fdf-2678-4fb5-a44a-aae399664327" width=400 alt="screenrecord">
 
 
 <p>
