@@ -4,6 +4,8 @@ This is a Flutter project developed as a thesis to fulfill the graduation requir
 ## E-Market Seller Application
 The E-Market Seller mobile application is designed for sellers who want to sell their products online, specifically catering to the needs of UMKM (Micro, Small, and Medium Enterprises) located in Kecamatan Malingping.
 
+![mokap](https://github.com/anugrahsputra/emarket-seller/assets/71306482/911c39fd-2dbc-438d-aee3-4c26fe64e634)
+
 ## Target Users: UMKM in Kecamatan Malingping
 The E-Market Seller mobile application aims to provide a platform for UMKM sellers in Kecamatan Malingping, to effectively sell their products online. By focusing on this specific user group, the application takes into account the unique requirements and challenges faced by UMKM businesses in Kecamatan Malingping, offering tailored features and functionalities to meet their needs.
 
