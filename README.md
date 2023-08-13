@@ -4,10 +4,27 @@ This is a Flutter project developed as a thesis to fulfill the graduation requir
 ## E-Market Seller Application
 The E-Market Seller mobile application is designed for sellers who want to sell their products online, specifically catering to the needs of UMKM (Micro, Small, and Medium Enterprises) located in Kecamatan Malingping.
 
+![mokap](https://github.com/anugrahsputra/emarket-seller/assets/71306482/f275e463-1f1d-4f0e-873f-9cb17d732aed)
+
 ## Target Users: UMKM in Kecamatan Malingping
 The E-Market Seller mobile application aims to provide a platform for UMKM sellers in Kecamatan Malingping, to effectively sell their products online. By focusing on this specific user group, the application takes into account the unique requirements and challenges faced by UMKM businesses in Kecamatan Malingping, offering tailored features and functionalities to meet their needs.
 
 Through this targeted approach, the E-Market Seller application strives to contribute to the growth and success of UMKM businesses in Kecamatan Malingping, promoting digital transformation and providing opportunities for them to expand their customer base and increase sales.
+
+## Demo
+<img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/8e440fdf-2678-4fb5-a44a-aae399664327" width=400 alt="screenrecord">
+
+## Screenshots
+<p>
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/5c8735ba-b3bb-423a-a533-309add9f95d4" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/a01b3fcc-8bce-4174-8043-0fcf66917950" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/d4ba6730-531d-4a55-a86a-e06e5089a912" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/acb6799e-ac39-41bd-bb39-8bb20573dc9b" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b151f611-ea2c-4f79-8d5e-c0f9e93a7f5c" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/53b9d21f-94b7-4998-ab0f-b57b9788df24" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/12cfe063-3222-470c-9339-ef33df8d96fa" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/83175c81-7488-412f-be72-61bc64b839ee" width=200 alt="login">
+</p>
 
 ## Features
 
@@ -52,19 +69,7 @@ Through this targeted approach, the E-Market Seller application strives to contr
 
 You can see the packages used in this project in the file [pubspec.yaml](pubspec.yaml).
 
-## Screenshots
 
-
-<p>
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/5c8735ba-b3bb-423a-a533-309add9f95d4" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/a01b3fcc-8bce-4174-8043-0fcf66917950" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/d4ba6730-531d-4a55-a86a-e06e5089a912" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/acb6799e-ac39-41bd-bb39-8bb20573dc9b" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b151f611-ea2c-4f79-8d5e-c0f9e93a7f5c" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/53b9d21f-94b7-4998-ab0f-b57b9788df24" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/12cfe063-3222-470c-9339-ef33df8d96fa" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/83175c81-7488-412f-be72-61bc64b839ee" width=200 alt="login">
-</p>
 
 ## Installation and Usage
 
