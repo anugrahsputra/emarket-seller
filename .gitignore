@@ -45,4 +45,4 @@ app.*.map.json
 
 
 /lib/common/google_api_key.dart
-/lib/firebase_options.dart
+/lib/common/env.dart

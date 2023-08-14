@@ -7,8 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 enum TravelMode { driving, walking, bicycling, transit }
 
 class DirectionServices {
-  static const String _baseUrl =
-      'https://maps.googleapis.com/maps/api/distancematrix/json?';
+  static const String _baseUrl = '${Env.mapsBaseUrl}${Env.directionUrl}';
 
   final Dio _dio;
 
