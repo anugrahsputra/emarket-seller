@@ -4,7 +4,7 @@ This is a Flutter project developed as a thesis to fulfill the graduation requir
 ## E-Market Seller Application
 The E-Market Seller mobile application is designed for sellers who want to sell their products online, specifically catering to the needs of UMKM (Micro, Small, and Medium Enterprises) located in Kecamatan Malingping.
 
-![mokap](https://github.com/anugrahsputra/emarket-seller/assets/71306482/f275e463-1f1d-4f0e-873f-9cb17d732aed)
+![mokap](https://github.com/anugrahsputra/emarket-seller/assets/71306482/e9a17337-d66a-465c-8f94-acaaa1d9394c)
 
 ## Target Users: UMKM in Kecamatan Malingping
 The E-Market Seller mobile application aims to provide a platform for UMKM sellers in Kecamatan Malingping, to effectively sell their products online. By focusing on this specific user group, the application takes into account the unique requirements and challenges faced by UMKM businesses in Kecamatan Malingping, offering tailored features and functionalities to meet their needs.
@@ -12,19 +12,22 @@ The E-Market Seller mobile application aims to provide a platform for UMKM selle
 Through this targeted approach, the E-Market Seller application strives to contribute to the growth and success of UMKM businesses in Kecamatan Malingping, promoting digital transformation and providing opportunities for them to expand their customer base and increase sales.
 
 ## Demo
-<img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/8e440fdf-2678-4fb5-a44a-aae399664327" width=400 alt="screenrecord">
+<img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/85fa10a8-d2e6-45db-85ad-96bb4d869a4d" width=400 alt="screenrecord">
 
 ## Screenshots
 <p>
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/5c8735ba-b3bb-423a-a533-309add9f95d4" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/a01b3fcc-8bce-4174-8043-0fcf66917950" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/d4ba6730-531d-4a55-a86a-e06e5089a912" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/acb6799e-ac39-41bd-bb39-8bb20573dc9b" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b151f611-ea2c-4f79-8d5e-c0f9e93a7f5c" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/53b9d21f-94b7-4998-ab0f-b57b9788df24" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/12cfe063-3222-470c-9339-ef33df8d96fa" width=200 alt="login">
-  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/83175c81-7488-412f-be72-61bc64b839ee" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/c1ab52c7-099c-4f5b-94ca-4e31b69eb296" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/545c0082-7e55-471d-85d4-1fd0e63a3485" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/de4e1108-267d-4b87-a9b9-57c3804a4ff2" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b5679fe8-0f30-495b-95bb-db0bde61d8f9" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/64c9e7fb-e736-4115-89ff-8c6852cb9683" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/72f7d029-86a6-48a8-bd7e-13584d289289" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/b8145b46-3b56-48ef-ac31-4aac02be8523" width=200 alt="login">
+  <img src="https://github.com/anugrahsputra/emarket-seller/assets/71306482/9cff6c93-d62e-4e8c-97dd-68471c272c32" width=200 alt="login">
 </p>
+
+
+
 
 ## Features
 
